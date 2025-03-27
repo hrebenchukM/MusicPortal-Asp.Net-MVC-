@@ -1,0 +1,56 @@
+﻿@model MusicPortal_Asp.Net_MVC_.Models.Genre
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="d-flex">
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4><i class="bi bi-music-note-beamed"></i> Music Portal</h4>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="@Url.Action("Index", "Home")"><i class="bi bi-house-door"></i> Home</a>
+            </li>
+            <li>
+                <a href="@Url.Action("NoActiveUsers", "Admin")"><i class="bi bi-person-x"></i> No active users</a>
+            </li>
+            <li>
+                <a href="@Url.Action("IndexGenres", "Admin")"><i class="bi bi-tags"></i> Genres</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Admin")"><i class="bi bi-music-note-list"></i> Songs</a>
+            </li>
+            <li>
+                <a href="@Url.Action("IndexArtists", "Admin")"><i class="bi bi-person-badge"></i> Artists</a>
+            </li>
+            <li>
+                <a href="@Url.Action("IndexUsers", "Admin")"><i class="bi bi-people"></i> Users</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="main-content flex-grow-1">
+        <div class="container">
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteGenre">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+       
+    </form>
+</div>
+</div>
+</div>

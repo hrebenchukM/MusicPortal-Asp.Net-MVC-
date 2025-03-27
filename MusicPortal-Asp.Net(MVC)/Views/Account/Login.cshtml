@@ -1,0 +1,56 @@
+﻿@model MusicPortal_Asp.Net_MVC_.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Context.Request.Cookies["login"] == null) 
+{
+<div class="container">
+<div class="row justify-content-center min-vh-100 align-items-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg">
+            <div class="card-body p-5">
+                    <h2 class="text-center mb-4"> Authorization</h2>
+                    <form asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="mb-4">
+                        <label asp-for="Login" class="form-label"></label>
+                        <input asp-for="Login" class="form-control" />
+                        <span asp-validation-for="Login" class="text-danger"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4 form-check">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label">Запомнить меня</label>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <input type="submit" value="Logon" class="btn btn-primary btn-lg" />
+                        <a class="btn btn-outline-primary me-2" asp-area="" asp-controller="Account" asp-action="LoginAsGuest">Login as Guest </a>
+                    </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <p>Вводить логин и пароль уже не нужно! <a asp-controller="Home" asp-action="Index">На главную</a></p>
+    </div>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

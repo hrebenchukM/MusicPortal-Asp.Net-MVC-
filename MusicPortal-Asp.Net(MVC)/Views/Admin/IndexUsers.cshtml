@@ -1,0 +1,109 @@
+﻿@model IEnumerable<MusicPortal_Asp.Net_MVC_.Models.User>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="d-flex">
+ 
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h4><i class="bi bi-music-note-beamed"></i> Music Portal</h4>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="@Url.Action("Index", "Home")"><i class="bi bi-house-door"></i> Home</a>
+            </li>
+            <li>
+                <a href="@Url.Action("NoActiveUsers", "Admin")"><i class="bi bi-person-x"></i> No active users</a>
+            </li>
+            <li>
+                <a href="@Url.Action("IndexGenres", "Admin")"><i class="bi bi-tags"></i> Genres</a>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Admin")"><i class="bi bi-music-note-list"></i> Songs</a>
+            </li>
+            <li>
+                <a href="@Url.Action("IndexArtists", "Admin")"><i class="bi bi-person-badge"></i> Artists</a>
+            </li>
+            <li>
+                <a href="@Url.Action("IndexUsers", "Admin")"><i class="bi bi-people"></i> Users</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="main-content flex-grow-1 ">
+        <div class="container">
+            <p>
+                <a asp-action="CreateUser">Create New User</a>
+            </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Login)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Role)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>@item.Login</td>
+                      
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Role)
+                        </td>
+                        <td>@(item.IsActive ? "Active" : "Inactive")</td>
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                <a href="@Url.Action("ChangeActiveStatusUser", "Admin", new { id = item.Id })" class="btn btn-warning">Deactivate</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("ChangeActiveStatusUser", "Admin", new { id = item.Id })" class="btn btn-success">Activate</a>
+                            }
+                        </td>
+                        <td>
+                                <div class="d-flex gap-1">
+                                    <a asp-action="EditUser" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a asp-action="DetailsUser" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                    <a asp-action="DeleteUser" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        </div>
+    </div>
+
+</div>
