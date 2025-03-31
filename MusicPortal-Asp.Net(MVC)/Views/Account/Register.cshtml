@@ -5,10 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container">
-<div class="row justify-content-center min-vh-100 align-items-center">
-    <div class="col-md-6">
-        <div class="card shadow-lg">
-            <div class="card-body p-5">
+    <div class="form-container shadow-lg">
                     <h2 class="text-center mb-4">Registration</h2>
                     <form asp-action="Register" method="post">
                         @Html.AntiForgeryToken()
@@ -40,13 +37,13 @@
                         <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
                     </div>
                     <div class="d-grid gap-2">
-                        <input type="submit" value="Check in" class="btn btn-primary btn-lg" />
+    
+                <button type="submit" value="Check in" class="btn btn-theme w-100">Check in</button>
                     </div>
                     </form>
             </div>
-        </div>
-    </div>
-</div>
+   
+ 
 </div>
 @section Scripts {
     @{

@@ -9,9 +9,18 @@
 
 <div class="d-flex">
 
+
+
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+    </button>
+
     <div class="sidebar">
         <div class="sidebar-header">
-            <h4><i class="bi bi-music-note-beamed"></i> Music Portal</h4>
+            <h4><i class="bi bi-music-note-beamed"></i>  Music Portal</h4>
+            <button class="sidebar-close" onclick="toggleSidebar()">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
         <ul class="sidebar-menu">
             <li>
@@ -22,61 +31,75 @@
                         <i class="bi bi-music-note-list"></i> Create Song
                     </a>
                 }
-                <a href="@Url.Action("Index", "Home")">
+                <a href="@Url.Action("Index", "Home")" class="active">
                     <i class="bi bi-music-note-list"></i>Songs
                 </a>
             </li>
+
         </ul>
     </div>
 
 
-    <div class="main-content flex-grow-1">
-        <div class="container">
-
-            <form asp-action="CreateSongU" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Artist" class="form-label text-muted">Artist</label>
-                <select asp-for="ArtistId" class ="form-control" asp-items="ViewBag.ArtistId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Genre" class="form-label text-muted">Genre</label>
-                <select asp-for="GenreId" class="form-control" asp-items="ViewBag.GenreId"></select>
-            </div>
-           
-            <div class="form-group">
-                <label asp-for="PathS" class="control-label"></label>
-                <input type="file" name="uploadedFileS" class="form-control rounded-3" />
-                <span asp-validation-for="PathS" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PathV" class="control-label"></label>
-                <input type="file" name="uploadedFileV" class="form-control rounded-3" />
-                <span asp-validation-for="PathV" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PathP" class="control-label"></label>
-                <input type="file" name="uploadedFileP" class="form-control rounded-3" />
-                <span asp-validation-for="PathP" class="text-danger"></span>
-            </div>
 
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+    <div class="main-content container">
+            <div class="form-container">
+                <h2 class="text-center mb-4">Upload Song</h2>
+
+                <form asp-action="CreateSongU" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Year" class="control-label"></label>
+                        <input asp-for="Year" class="form-control" />
+                        <span asp-validation-for="Year" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Artist" class="form-label text-muted">Artist</label>
+                        <select asp-for="ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Genre" class="form-label text-muted">Genre</label>
+                        <select asp-for="GenreId" class="form-control" asp-items="ViewBag.GenreId"></select>
+                    </div>
+                   
+
+                    <div class="mb-3">
+                        <label asp-for="PathS" class="control-label">Audio File</label>
+                        <input type="file" name="uploadedFileS" class="form-control "/>
+                        <span asp-validation-for="PathS" class="text-danger"></span>
+
+                    </div>
+
+                       <div class="mb-3">
+                        <label asp-for="PathV" class="control-label">Cover Video</label>
+                        <input type="file" name="uploadedFileV" class="form-control rounded-3" />
+                        <span asp-validation-for="PathV" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PathP" class="control-label">Cover Image</label>
+                        <input type="file" name="uploadedFileP" class="form-control" />
+                        <span asp-validation-for="PathP" class="text-danger"></span>
+                  
+                    </div>
+
+
+                    <button type="submit" class="btn btn-theme w-100" value="Create" >Upload Song</button>
+                </form>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
+
+
+
+
 </div>
 
 

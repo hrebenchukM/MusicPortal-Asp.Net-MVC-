@@ -7,9 +7,18 @@
 
 <div class="d-flex">
 
+
+
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="bi bi-list"></i>
+    </button>
+
     <div class="sidebar">
         <div class="sidebar-header">
-            <h4 class ="logo"><i class="bi bi-music-note-beamed"></i> Music Portal</h4>
+            <h4><i class="bi bi-music-note-beamed"></i>  Music Portal</h4>
+            <button class="sidebar-close" onclick="toggleSidebar()">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
         <ul class="sidebar-menu">
             <li>
@@ -20,40 +29,62 @@
                         <i class="bi bi-music-note-list"></i> Create Song
                     </a>
                 }
-                <a href="@Url.Action("Index", "Home")">
+                <a href="@Url.Action("Index", "Home")" class="active">
                     <i class="bi bi-music-note-list"></i>Songs
                 </a>
             </li>
+         
         </ul>
     </div>
 
 
-    <div class="main-content flex-grow-1">
-        <div class="container">
-            <div class="row g-4">
-                @foreach (var item in Model)
-                {
-                    <div class="col-md-4 col-lg-3 d-flex">
+    
 
-                        <div class="card song-card shadow-sm ">
-                           <img src="@Html.DisplayFor(modelItem => item.PathP)" class="card-img-top " alt="photo">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title song-info text-gradient">@Html.DisplayFor(modelItem => item.Title)</h5>
-                                <button class="btn btn-theme w-100">
-                                <a asp-action="DetailsSongU" asp-route-id="@item.Id" class="text-white text-decoration-none">Details</a> 
-                                </button>
-
-
-                                <audio controls class="w-100 mt-2">
-                                    <source src="@Url.Action("GetFile", "Home", new { fileName = item.PathS })">
-                                </audio>
+    <div class="main-content container">
+        <h2><i class="bi bi-music-note-list me-2"></i>All Songs</h2>
+        <div class="d-flex gap-3">
+            <div class="input-group">
+                <span class="input-group-text bg-transparent border-end-0">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="search" class="form-control border-start-0" placeholder="Search songs...">
+            </div>
+            <select class="form-select">
+                <option>All Genres</option>
+                <option>Pop</option>
+                <option>Rock</option>
+                <option>Jazz</option>
+                <option>Electronic</option>
+            </select>
+        </div>
+        <div class="row g-3">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 col-sm-6">
+                    <div class="card song-card h-100">
+                        <img class="card-img-top" src="@Html.DisplayFor(modelItem => item.PathP)" alt="Song cover">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h4>
+                            <div class="song-info mb-3">
+                                <i class="bi bi-person-circle"></i>
+                                <span>@Html.DisplayFor(modelItem => item.Artist.Name)</span>
+                                <i class="bi bi-dot"></i>
+                                <span>@Html.DisplayFor(modelItem => item.Genre.Name)</span>
+                            </div>
+                            <div class="mt-auto">
+                                <a asp-action="DetailsSongU" asp-route-id="@item.Id" class="btn btn-theme w-100">
+                                    <i class="bi bi-play-circle-fill me-2"></i> Play now
+                                </a>
                             </div>
                         </div>
                     </div>
-                }
-                
-            </div>
+                </div>
+
+            }
         </div>
     </div>
-
 </div>
+
+
+
+

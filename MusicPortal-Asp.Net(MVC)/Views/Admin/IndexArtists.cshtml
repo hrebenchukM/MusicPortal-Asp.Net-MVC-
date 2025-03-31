@@ -7,67 +7,70 @@
 
 
 
-<div class="d-flex">
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h4><i class="bi bi-music-note-beamed"></i> Music Portal</h4>
-        </div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="@Url.Action("Index", "Home")"><i class="bi bi-house-door"></i> Home</a>
-            </li>
-            <li>
-                <a href="@Url.Action("NoActiveUsers", "Admin")"><i class="bi bi-person-x"></i> No active users</a>
-            </li>
-            <li>
-                <a href="@Url.Action("IndexGenres", "Admin")"><i class="bi bi-tags"></i> Genres</a>
-            </li>
-            <li>
-                <a href="@Url.Action("Index", "Admin")"><i class="bi bi-music-note-list"></i> Songs</a>
-            </li>
-            <li>
-                <a href="@Url.Action("IndexArtists", "Admin")"><i class="bi bi-person-badge"></i> Artists</a>
-            </li>
-            <li>
-                <a href="@Url.Action("IndexUsers", "Admin")"><i class="bi bi-people"></i> Users</a>
-            </li>
-        </ul>
-    </div>
+<div>
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a href="@Url.Action("Index", "Admin")" class="nav-link "><i class="bi bi-house-door"></i> Home</a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("NoActiveUsers", "Admin")" class="nav-link"><i class="bi bi-person-x"></i> No active users</a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("IndexGenres", "Admin")" class="nav-link"><i class="bi bi-tags"></i> Genres</a>
+        </li>
+     
+        <li class="nav-item">
+            <a href="@Url.Action("IndexArtists", "Admin")" class="nav-link active"><i class="bi bi-person-badge"></i> Artists</a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("IndexUsers", "Admin")" class="nav-link"><i class="bi bi-people"></i> Users</a>
+        </li>
+
+    </ul>
 
 
-    <div class="main-content flex-grow-1">
+
+    <div class="tab-content flex-grow-1">
         <div class="container">
+            <p>
+                <a asp-action="CreateArtist" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle"></i> Create New Artist
+                </a>
+            </p>
 
-<p>
-    <a asp-action="CreateArtist">Create New Artist</a>
-</p>
-
- 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                    <a asp-action="EditArtist" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="DetailsArtist" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="DeleteArtist" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-</div>
-</div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Name)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <a asp-action="EditArtist" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                        <a asp-action="DetailsArtist" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                        <a asp-action="DeleteArtist" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
