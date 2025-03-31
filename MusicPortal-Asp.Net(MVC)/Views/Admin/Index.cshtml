@@ -30,7 +30,7 @@
 
     <div class="tab-content ">
             <p>
-                <a asp-action="CreateSong" class="btn btn-primary btn-sm">
+            <a asp-action="CreateSong" class="btn btn-theme btn-sm">
                     <i class="bi bi-plus-circle"></i> Create New Song
                 </a>
             </p>
@@ -63,14 +63,14 @@
                                 <td>@Html.DisplayFor(modelItem => item.User.Login)</td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <a asp-action="EditSong" asp-route-id="@item.Id" class="btn btn-th btn-sm">
-                                            <i class="bi bi-pencil-square"></i> Edit
+                                    <a asp-action="EditSong" asp-route-id="@item.Id" class="btn btn-outline-theme btn-sm">
+                                            <i class="bi bi-pencil-square"></i> 
                                         </a>
                                         <a asp-action="DetailsSong" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">
-                                            <i class="bi bi-info-circle"></i> Details
+                                            <i class="bi bi-info-circle"></i> 
                                         </a>
                                         <a asp-action="DeleteSong" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
-                                            <i class="bi bi-trash"></i> Delete
+                                            <i class="bi bi-trash"></i> 
                                         </a>
                                     </div>
                                 </td>

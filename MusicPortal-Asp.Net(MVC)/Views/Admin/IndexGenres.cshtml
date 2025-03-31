@@ -39,7 +39,7 @@
     <div class="tab-content flex-grow-1">
         <div class="container">
             <p>
-                <a asp-action="CreateGenre" class="btn btn-primary btn-sm">
+                <a asp-action="CreateGenre" class="btn btn-theme btn-sm">
                     <i class="bi bi-plus-circle"></i> Create New Genre
                 </a>
             </p>
@@ -59,14 +59,14 @@
                                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <a asp-action="EditGenre" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
-                                                <i class="bi bi-pencil-square"></i> Edit
+                                        <a asp-action="EditGenre" asp-route-id="@item.Id" class="btn btn-outline-theme btn-sm">
+                                                <i class="bi bi-pencil-square"></i> 
                                             </a>
                                         <a asp-action="DetailsGenre" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">
-                                                <i class="bi bi-info-circle"></i> Details
+                                                <i class="bi bi-info-circle"></i> 
                                             </a>
                                             <a asp-action="DeleteGenre" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
-                                                <i class="bi bi-trash"></i> Delete
+                                                <i class="bi bi-trash"></i> 
                                             </a>
                                     </div>
                                 </td>

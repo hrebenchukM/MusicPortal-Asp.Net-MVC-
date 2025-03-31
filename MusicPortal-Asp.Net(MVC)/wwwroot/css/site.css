@@ -23,6 +23,29 @@
     --text: var(--text-light);
 }
 
+[data-theme="dark"] .table {
+    color: var(--text-dark) ; 
+}
+
+[data-theme="dark"] .nav-tabs .nav-link {
+    color: var(--text-dark) ;
+}
+
+[data-theme="light"] .nav-tabs .nav-link {
+    color: var(--text-light) ; 
+}
+
+
+[data-theme="dark"] .nav-tabs .nav-link.active {
+    background-color: var(--primary);
+    color: var(--text-dark);
+}
+
+[data-theme="light"] .nav-tabs .nav-link.active {
+    background-color: var(--primary);
+    color: var(--text-light) ;
+}
+
 body {
     background-color: var(--primary);
     color: var(--text);
