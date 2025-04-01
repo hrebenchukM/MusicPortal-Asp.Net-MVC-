@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using MusicPortal_Asp.Net_MVC_.Models;
 using MusicPortal_Asp.Net_MVC_.Repository;
 
@@ -25,8 +27,11 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             _arepo = ar;
         }
 
-        public async Task <IActionResult> Index()
+        public async Task <IActionResult> Index(string artist, int genre = 0, int page = 1,//по умолчанию приходит страница первый раз 1////идентификатор команды и амплуа
+            SortState sortOrder = SortState.TitleAsc)
         {
+          
+
             string? login = HttpContext.Session.GetString("Login") ?? Request.Cookies["login"];
             if (login != null)
             {
@@ -34,8 +39,51 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 var msgContext = await _urepo.GetList();
                 ViewBag.UserId = new SelectList(msgContext, "Id", "Login");
 
-                var songs = await _srepo.GetList();
+                // var songs = await _srepo.GetList();
 
+                int pageSize = 4; // количество элементов на странице
+
+                //фильтрация
+                IQueryable<Song> songs = _srepo.GetIQueryable();//получаем всю коллекцию игроков
+
+                if (genre != 0)
+                {
+                    songs = songs.Where(p => p.GenreId == genre);//фильтрация по команде
+                }
+                if (!string.IsNullOrEmpty(artist))
+                {
+                    songs = songs.Where(p => p.Artist.Name == artist);//фильтрация по позиции
+                }
+
+
+
+
+                // сортировка
+                songs = sortOrder switch
+                {
+                    SortState.TitleDesc => songs.OrderByDescending(s => s.Title),
+                    SortState.YearAsc => songs.OrderBy(s => s.Year),
+                    SortState.YearDesc => songs.OrderByDescending(s => s.Year),
+                    SortState.ArtistAsc => songs.OrderBy(s => s.Artist!.Name),
+                    SortState.ArtistDesc => songs.OrderByDescending(s => s.Artist!.Name),
+                    SortState.GenreAsc => songs.OrderBy(s => s.Genre!.Name),
+                    SortState.GenreDesc => songs.OrderByDescending(s => s.Genre!.Name),
+                    _ => songs.OrderBy(s => s.Title),
+                };
+
+                // пагинация
+                var count = await songs.CountAsync();//кол-во игроков
+                var items = await songs.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+
+
+                // формируем модель представления
+                IndexViewModel viewModel = new IndexViewModel(
+                    items,
+                new PageViewModel(count, page, pageSize),
+                    new FilterViewModel(await _grepo.GetList(), genre, artist),
+                    new SortViewModel(sortOrder)
+                );
 
 
                 string? role = HttpContext.Session.GetString("Role") ?? Request.Cookies["role"];
@@ -45,14 +93,28 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                     return RedirectToAction("Index", "Admin");
 
                 }
-               
-                return View(songs);
+
+                //return View(songs);
+                return View(viewModel);
             }
             else
             {
                 return RedirectToAction("Login", "Account");
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
         public ActionResult Logout()
         {
             HttpContext.Session.Clear(); 

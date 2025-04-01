@@ -20,6 +20,15 @@ namespace MusicPortal_Asp.Net_MVC_.Repository
                                     .Include(s => s.User)
                                     .ToListAsync();
         }
+
+        public IQueryable <Song> GetIQueryable()
+        {
+            return _context.Songs
+                           .Include(s => s.Artist)
+                           .Include(s => s.Genre)
+                           .Include(s => s.User);
+        }
+
         public async Task<Song?> Get(int id)
         {
 

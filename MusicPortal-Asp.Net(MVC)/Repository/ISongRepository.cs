@@ -8,6 +8,8 @@ namespace MusicPortal_Asp.Net_MVC_.Repository
         Task<int?> GetUserIdByRole(string role);
 
         Task<int?> GetUserIdByLogin(string login);
+        IQueryable<Song> GetIQueryable();
+
 
     }
 }
