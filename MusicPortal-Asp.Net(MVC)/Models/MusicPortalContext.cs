@@ -30,8 +30,24 @@ namespace MusicPortal_Asp.Net_MVC_.Models
                 Users?.Add(admin1);
 
 
+
+
+
+
                 Genre genre = new Genre { Name = "Pop" };
                 Genres?.Add(genre);
+
+                Genre genre2 = new Genre { Name = "Rep" };
+                Genres?.Add(genre2);
+
+
+
+                Genre genre3 = new Genre { Name = "Hip-Hop" };
+                Genres?.Add(genre3);
+
+                Genre genre4 = new Genre { Name = "Dance-Pop" };
+                Genres?.Add(genre4);
+
                 SaveChanges();
                 Artist art1 = new Artist { Name = "SawanoHiroyuki[nZk]" };
                 Artists?.Add(art1);
@@ -40,7 +56,17 @@ namespace MusicPortal_Asp.Net_MVC_.Models
                 Artist art2 = new Artist { Name = "Marcus King" };
                 Artists?.Add(art2);
 
-              
+                Artist art3 = new Artist { Name = "Gibbs" };
+                Artists?.Add(art3);
+
+
+                Artist art4 = new Artist { Name = "Carla's Dreams" };
+                Artists?.Add(art4);
+
+
+                Artist art5 = new Artist { Name = "Artem Pivovarov " };
+                Artists?.Add(art5);
+
                 SaveChanges();
                 Song song1 = new Song
                 {
@@ -79,9 +105,52 @@ namespace MusicPortal_Asp.Net_MVC_.Models
                     PathP = "/Images/Shadowborn.jpg"
                 };
 
+
+
+                Song song4 = new Song
+                {
+                    Title = "Train to be continued",
+                    Year = 2021,
+                    ArtistId = 3,
+                    GenreId = 2,
+                    UserId = admin1.Id,
+                    PathS = "/sounds/TwojeSerceProblemy.mp3",
+                    PathV = "/video/TwojeSerceProblemy.mp4",
+                    PathP = "/Images/TwojeSerceProblemy.jpg"
+                };
+
+
+                Song song5 = new Song
+                {
+                    Title = "Scara 2, etajul 7",
+                    Year = 2020,
+                    ArtistId = 4,
+                    GenreId = 3,
+                    UserId = admin1.Id,
+                    PathS = "/sounds/Scara.mp3",
+                    PathV = "/video/Scara.mp4",
+                    PathP = "/Images/Scara.jpg"
+                };
+
+                Song song6 = new Song
+                {
+                    Title = "Deja Vu",
+                    Year = 2019,
+                    ArtistId = 5,
+                    GenreId = 4,
+                    UserId = admin1.Id,
+                    PathS = "/sounds/DejaVu.mp3",
+                    PathV = "/video/DejaVu.mp4",
+                    PathP = "/Images/DejaVu.jpg"
+                };
+
+
                 Songs?.Add(song1);
                 Songs?.Add(song2);
                 Songs?.Add(song3);
+                Songs?.Add(song4);
+                Songs?.Add(song5);
+                Songs?.Add(song6);
                 SaveChanges();
 
 
