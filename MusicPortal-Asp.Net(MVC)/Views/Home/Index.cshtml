@@ -69,26 +69,25 @@
                     <div class="col-md-4">
                         <label class="form-label mb-0">Sort by:</label>
                         <div class="d-flex justify-content-start">
-                            <a asp-action="Index"
-                               asp-route-sortOrder="@(Model.SortViewModel.TitleSort)"
-                               asp-route-artist="@(Model.FilterViewModel.SelectedArtist)"
-                               asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
-                               class="btn btn-outline-theme btn-sm sort-link me-2">Title</a>
+                          
+                            <sort-header action="Index" up="@Model.SortViewModel.Up"
+                                         current="@Model.SortViewModel.Current" property="@Model.SortViewModel.TitleSort">
+                                Title
+                            </sort-header>
+                            <sort-header action="Index" up="@Model.SortViewModel.Up"
+                                         current="@Model.SortViewModel.Current" property="@Model.SortViewModel.YearSort">
+                                Year
+                            </sort-header>
 
-                            <a asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.YearSort)"
-                               asp-route-artist="@(Model.FilterViewModel.SelectedArtist)"
-                               asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
-                               class="btn btn-outline-theme btn-sm sort-link me-2">Year</a>
+                            <sort-header action="Index" up="@Model.SortViewModel.Up"
+                                         current="@Model.SortViewModel.Current" property="@Model.SortViewModel.ArtistSort">
+                                Artist
+                            </sort-header>
 
-                            <a asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.ArtistSort)"
-                               asp-route-artist="@(Model.FilterViewModel.SelectedArtist)"
-                               asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
-                               class="btn btn-outline-theme btn-sm sort-link me-2">Artist</a>
-
-                            <a asp-action="Index" asp-route-sortOrder="@(Model.SortViewModel.GenreSort)"
-                               asp-route-artist="@(Model.FilterViewModel.SelectedArtist)"
-                               asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
-                               class="btn btn-outline-theme btn-sm sort-link">Genre</a>
+                            <sort-header action="Index" up="@Model.SortViewModel.Up"
+                                         current="@Model.SortViewModel.Current" property="@Model.SortViewModel.GenreSort">
+                                Genre
+                            </sort-header>
                         </div>
                     </div>
                 </div>
@@ -130,68 +129,11 @@
 
             }
         </div>
-        <ul class="pagination mt-5 justify-content-center">
-            @if (Model.PageViewModel.HasPreviousPage)
-            {
-                <li class="page-item">
-                    <a asp-action="Index"
-                       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-                       asp-route-artist="@(Model.FilterViewModel.SelectedArtist)"
-                       asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
-                       asp-route-sortorder="@(Model.SortViewModel.Current)"
-                       class="page-link">
-                        <i class="bi bi-chevron-double-left me-1"></i>
-                        Previous
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="page-item disabled">
-                    <span class="page-link">
-                        <i class="bi bi-chevron-double-left me-1"></i>
-                        Previous
-                    </span>
-                </li>
-            }
 
-            @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.PageViewModel.PageNumber ? "active" : "")">
-                    <a asp-action="Index"
-                       asp-route-page="@i"
-                       asp-route-artist="@(Model.FilterViewModel.SelectedArtist)"
-                       asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
-                       asp-route-sortorder="@(Model.SortViewModel.Current)"
-                       class="page-link">
-                        @i
-                    </a>
-                </li>
-            }
-
-            @if (Model.PageViewModel.HasNextPage)
-            {
-                <li class="page-item">
-                    <a asp-action="Index"
-                       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-                       asp-route-artist="@(Model.FilterViewModel.SelectedArtist)"
-                       asp-route-genre="@(Model.FilterViewModel.SelectedGenre)"
-                       asp-route-sortorder="@(Model.SortViewModel.Current)"
-                       class="page-link">
-                        Next <i class="bi bi-chevron-double-right ms-1"></i>
-                    </a>
-                </li>
-            }
-            else
-            {
-                <li class="page-item disabled">
-                    <span class="page-link">
-                        Next <i class="bi bi-chevron-double-right ms-1"></i>
-                    </span>
-                </li>
-            }
-        </ul>
-
+        <page-link page-model="Model.PageViewModel" page-action="Index"
+                   page-url-position="@(Model.FilterViewModel.SelectedArtist)"
+                   page-url-team="@(Model.FilterViewModel.SelectedGenre)"
+                   page-url-sortorder="@(Model.SortViewModel.Current)"></page-link>
 
     </div>
 </div>

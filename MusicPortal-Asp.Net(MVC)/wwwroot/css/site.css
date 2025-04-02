@@ -436,6 +436,33 @@ audio::-webkit-media-controls-timeline {
     }
 
 
+.glyphicon {
+    border: solid var(--accent);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    margin: 0 5px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.glyphicon-chevron-down,
+.glyphicon-chevron-up {
+    transform: rotate(45deg); 
+    transition: transform 0.3s ease; 
+}
+
+
+.glyphicon-chevron-up {
+    transform: rotate(-135deg);
+}
+
+
+[data-theme="dark"] .glyphicon {
+    border-color: var(--text-dark); 
+}
+
+[data-theme="light"] .glyphicon {
+    border-color: var(--text-light);
+}
 
 .pagination {
     margin-top: 2rem;
