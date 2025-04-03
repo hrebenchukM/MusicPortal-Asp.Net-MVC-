@@ -11,4 +11,8 @@
     <PackageReference Include="AutoMapper" Version="14.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MusicPortal-Asp.Net(MVC).DAL\MusicPortal-Asp.Net(MVC).DAL.csproj" />
+  </ItemGroup>
+
 </Project>
