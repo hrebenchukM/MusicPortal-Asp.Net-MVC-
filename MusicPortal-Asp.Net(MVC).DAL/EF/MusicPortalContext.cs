@@ -1,10 +1,8 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using MusicPortal_Asp.Net_MVC_.Services;
+﻿using Microsoft.EntityFrameworkCore;
+using MusicPortal_Asp.Net_MVC_.DAL.Entities;
 
-namespace MusicPortal_Asp.Net_MVC_.Models
-{
+namespace MusicPortal_Asp.Net_MVC_.DAL.EF
+{   
     public class MusicPortalContext : DbContext
     {
         private readonly IPassword _passwordService;
@@ -26,7 +24,7 @@ namespace MusicPortal_Asp.Net_MVC_.Models
                 string password = _passwordService.HashPassword(salt, "admin123");
 
 
-                User admin1 = new User { FirstName = "admin", LastName = "admin", Login = "admin1@gmail.com",Password= password, Salt= salt, Role = "Admin",IsActive = true };
+                User admin1 = new User { FirstName = "admin", LastName = "admin", Login = "admin1@gmail.com", Password = password, Salt = salt, Role = "Admin", IsActive = true };
                 Users?.Add(admin1);
 
 
@@ -49,22 +47,22 @@ namespace MusicPortal_Asp.Net_MVC_.Models
                 Genres?.Add(genre4);
 
                 SaveChanges();
-                Artist art1 = new Artist { Name = "SawanoHiroyuki[nZk]" };
+                Genre art1 = new Genre { Name = "SawanoHiroyuki[nZk]" };
                 Artists?.Add(art1);
 
 
-                Artist art2 = new Artist { Name = "Marcus King" };
+                Genre art2 = new Genre { Name = "Marcus King" };
                 Artists?.Add(art2);
 
-                Artist art3 = new Artist { Name = "Gibbs" };
+                Genre art3 = new Genre { Name = "Gibbs" };
                 Artists?.Add(art3);
 
 
-                Artist art4 = new Artist { Name = "Carla's Dreams" };
+                Genre art4 = new Genre { Name = "Carla's Dreams" };
                 Artists?.Add(art4);
 
 
-                Artist art5 = new Artist { Name = "Artem Pivovarov " };
+                Genre art5 = new Genre { Name = "Artem Pivovarov " };
                 Artists?.Add(art5);
 
                 SaveChanges();
@@ -72,8 +70,8 @@ namespace MusicPortal_Asp.Net_MVC_.Models
                 {
                     Title = "Dark Aria",
                     Year = 2024,
-                    ArtistId = 1,  
-                    GenreId = 1,   
+                    ArtistId = 1,
+                    GenreId = 1,
                     UserId = admin1.Id,
                     PathS = "/sounds/DarkAria.mp3",
                     PathV = "/video/Aria.mp4",
@@ -158,6 +156,6 @@ namespace MusicPortal_Asp.Net_MVC_.Models
             }
         }
 
-       
+
     }
 }

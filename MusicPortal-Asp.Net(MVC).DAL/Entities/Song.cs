@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MusicPortal_Asp.Net_MVC_.Models
+namespace MusicPortal_Asp.Net_MVC_.DAL.Entities
 {
     public class Song
     {
@@ -20,8 +18,10 @@ namespace MusicPortal_Asp.Net_MVC_.Models
         public string? PathV { get; set; }
         public string? PathP { get; set; }
 
-        public Artist? Artist { get; set; }
+        public Genre? Artist { get; set; }
         public Genre? Genre { get; set; }
         public User? User { get; set; }
     }
 }
+
+
