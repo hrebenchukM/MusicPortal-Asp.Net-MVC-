@@ -1,53 +1,52 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MusicPortal_Asp.Net_MVC_.Models;
-using MusicPortal_Asp.Net_MVC_.Repository;
-using MusicPortal_Asp.Net_MVC_.Services;
+using MusicPortal_Asp.Net_MVC_.BLL.DTO;
+using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
+using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
 
 namespace MusicPortal_Asp.Net_MVC_.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IUserRepository _urepo;
-        private readonly IGenreRepository _grepo;
-        private readonly IArtistRepository _arepo;
-        private readonly ISongRepository _srepo;
+        private readonly ISongService songService;
+        private readonly IArtistService artistService;//работаем с тим сервисом 
+        private readonly IGenreService genreService;
+        private readonly IUserService userService;
         IWebHostEnvironment _appEnvironment;
-        public AdminController(IUserRepository ur, IGenreRepository gr, IArtistRepository ar, ISongRepository sr, IWebHostEnvironment appEnvironment)
+        public AdminController(ISongService songserv, IArtistService artistserv, IGenreService genreserv, IUserService userserv, IWebHostEnvironment appEnvironment)
         {
             _appEnvironment = appEnvironment;
-            _urepo = ur;
-            _grepo = gr;
-            _arepo = ar;
-            _srepo = sr;
+            songService = songserv;
+            artistService = artistserv;
+            genreService = genreserv;
+            userService = userserv;
         }
 
         public async Task<IActionResult> Index()
         {
-            var songs = await _srepo.GetList();
+            var songs = await songService.GetSongs();
             return View(songs);
         }
 
 
         public async Task<IActionResult> IndexUsers()
         {
-            var users = await _urepo.GetList(); 
+            var users = await userService.GetUsers(); 
             return View(users);
         }
 
 
         public async Task<IActionResult> NoActiveUsers()
         {
-            var noActiveUsers = await _urepo.GetInactiveUsers();
+            var noActiveUsers = await userService.GetInactiveUsers();
             return View(noActiveUsers);
         }
 
         public async Task<IActionResult> ChangeActiveStatusUser(int id)
         {
-            await _urepo.ChangeActiveStatus(id);
-            await _urepo.Save();
+            await userService.ChangeActiveStatus(id);
            
             return RedirectToAction(nameof(NoActiveUsers)); 
         }
@@ -57,39 +56,46 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         public async Task<IActionResult> DetailsUser(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
 
-            var user = await _urepo.Get(id.Value);
-            if (user == null)
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                UserDTO user = await userService.GetUser((int)id);
+
+                return View(user);
+            }
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            return View(user);
         }
 
 
         public async Task<IActionResult> EditUser(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                  return NotFound();
+                }
 
-            var user = await _urepo.Get(id.Value);
-            if (user == null)
-            {
-                return NotFound();
+                var user = await userService.GetUser((int)id);
+                return View(user);
             }
-            return View(user);
+            catch (ValidationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(int id, [Bind("Id,FirstName,LastName,Login,Password,Salt,Role,IsActive")] User user)
+        public async Task<IActionResult> EditUser(int id, [Bind("Id,FirstName,LastName,Login,Password,Salt,Role,IsActive")] UserDTO user)
         {
             if (id != user.Id)
             {
@@ -100,8 +106,8 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             {
                 try
                 {
-                    _urepo.Update(user);
-                    await _urepo.Save();
+
+                    await userService.UpdateUser(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -129,30 +135,31 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser([Bind("Id,FirstName,LastName,Login,Password,Salt,Role,IsActive")] User user)
+        public async Task<IActionResult> CreateUser([Bind("Id,FirstName,LastName,Login,Password,Salt,Role,IsActive")] UserDTO user)
         {
             if (ModelState.IsValid)
             {
-                await _urepo.Create(user);
-                await _urepo.Save();
+                await userService.CreateUser(user);
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
         }
         public async Task<IActionResult> DeleteUser(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var user = await _urepo.Get(id.Value);
-            if (user == null)
+                UserDTO user = await userService.GetUser((int)id);
+                return View(user);
+            }
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            return View(user);
         }
 
 
@@ -160,20 +167,15 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedUser(int id)
         {
-            var user = await _urepo.Get(id);
-            if (user != null)
-            {
-                await _urepo.Delete(id);
-                await _urepo.Save();
-            }
-
+           
+            await userService.DeleteUser(id);
             return RedirectToAction(nameof(Index));
         }
 
 
         private async Task<bool> UserExists(int id)
         {
-            return await _urepo.Exists(id);
+            return await userService.ExistsUser(id);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,24 +183,28 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         public async Task<IActionResult> IndexGenres()
         {
-            var genres = await _grepo.GetList();
+            var genres = await genreService.GetGenres();
             return View(genres);
         }
 
         public async Task<IActionResult> DetailsGenre(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                GenreDTO genre = await genreService.GetGenre((int)id);
+                return View(genre);
+            }
+            catch (ValidationException ex)
+            {
+                return NotFound(ex.Message);
             }
 
-            var genre = await _grepo.Get(id.Value);
-            if (genre == null)
-            {
-                return NotFound();
-            }
-
-            return View(genre);
+         
         }
 
      
@@ -209,12 +215,11 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateGenre([Bind("Id,Name")] Genre genre)
+        public async Task<IActionResult> CreateGenre([Bind("Id,Name")] GenreDTO genre)
         {
             if (ModelState.IsValid)
             {
-                await _grepo.Create(genre);
-                await _grepo.Save();
+                await genreService.CreateGenre(genre);
                 return RedirectToAction(nameof(Index));
             }
             return View(genre);
@@ -222,22 +227,26 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         public async Task<IActionResult> EditGenre(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var genre = await _grepo.Get(id.Value);
-            if (genre == null)
-            {
-                return NotFound();
+                GenreDTO genre = await genreService.GetGenre((int)id);
+           
+                return View(genre);
             }
-            return View(genre);
+            catch (ValidationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditGenre(int id, [Bind("Id,Name")] Genre genre)
+        public async Task<IActionResult> EditGenre(int id, [Bind("Id,Name")] GenreDTO genre)
         {
             if (id != genre.Id)
             {
@@ -248,8 +257,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             {
                 try
                 {
-                    _grepo.Update(genre);
-                    await _grepo.Save();
+                    await genreService.UpdateGenre(genre);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -269,29 +277,30 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         public async Task<IActionResult> DeleteGenre(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                   return NotFound();
+                }
 
-            var genre = await _grepo.Get(id.Value);
-            if (genre == null)
+                GenreDTO genre = await genreService.GetGenre((int)id);
+                return View(genre);
+            }
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            return View(genre);
         }
 
         [HttpPost, ActionName("DeleteGenre")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedGenre(int id)
         {
-            var genre = await _grepo.Get(id);
+            GenreDTO genre = await genreService.GetGenre((int)id);
             if (genre != null)
             {
-                await _grepo.Delete(id);
-                await _grepo.Save();
+                await genreService.DeleteGenre(id);
             }
 
             return RedirectToAction(nameof(Index));
@@ -299,7 +308,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         private async Task<bool> GenreExists(int id)
         {
-            return await _grepo.Exists(id);
+            return await genreService.ExistsGenre(id);
         }
 
 
@@ -307,24 +316,27 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public async Task<IActionResult> IndexArtists()
         {
-            var artists = await _arepo.GetList();
+            var artists = await artistService.GetArtists();
             return View(artists);
         }
 
         public async Task<IActionResult> DetailsArtist(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var artist = await _arepo.Get(id.Value);
-            if (artist == null)
+                ArtistDTO artist = await artistService.GetArtist((int)id);
+           
+                return View(artist);
+            }
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            return View(artist);
         }
 
         public IActionResult CreateArtist()
@@ -334,12 +346,11 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateArtist([Bind("Id,Name")] Artist artist)
+        public async Task<IActionResult> CreateArtist([Bind("Id,Name")] ArtistDTO artist)
         {
             if (ModelState.IsValid)
             {
-                await _arepo.Create(artist);
-                await _arepo.Save();
+                await artistService.CreateArtist(artist);
                 return RedirectToAction(nameof(Index));
             }
             return View(artist);
@@ -347,22 +358,26 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         public async Task<IActionResult> EditArtist(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var artist = await _arepo.Get(id.Value);
-            if (artist == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                ArtistDTO artist = await artistService.GetArtist((int)id);
+                return View(artist);
             }
-            return View(artist);
+            catch (ValidationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditArtist(int id, [Bind("Id,Name")] Artist artist)
+        public async Task<IActionResult> EditArtist(int id, [Bind("Id,Name")] ArtistDTO artist)
         {
             if (id != artist.Id)
             {
@@ -373,8 +388,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             {
                 try
                 {
-                    _arepo.Update(artist);
-                    await _arepo.Save();
+                    await artistService.UpdateArtist(artist);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -394,18 +408,20 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         public async Task<IActionResult> DeleteArtist(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var artist = await _arepo.Get(id.Value);
-            if (artist == null)
+                ArtistDTO artist = await artistService.GetArtist((int)id);
+                return View(artist);
+            }
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            return View(artist);
         }
 
    
@@ -413,19 +429,20 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedArtist(int id)
         {
-            var artist = await _arepo.Get(id);
+
+            ArtistDTO artist = await artistService.GetArtist((int)id);
+
             if (artist != null)
             {
-                await _arepo.Delete(id);
+                await artistService.DeleteArtist(id);
             }
 
-            await _arepo.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<bool> ArtistExists(int id)
         {
-            return await _arepo.Exists(id);
+            return await artistService.ExistsArtist(id);
         }
 
 
@@ -435,25 +452,27 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
       
         public async Task<IActionResult> DetailsSong(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var song = await _srepo.Get(id.Value);
-            if (song == null)
+                SongDTO song = await songService.GetSong((int)id);
+                return View(song);
+            }
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            return View(song);
         }
 
         public async Task <IActionResult> CreateSong()
         {
-            var artistList = await _arepo.GetList();
-            var genreList = await _grepo.GetList();
-            var userList = await _urepo.GetList();
+            var artistList = await artistService.GetArtists();
+            var genreList = await genreService.GetGenres();
+            var userList = await userService.GetUsers();
 
             ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name");
             ViewData["GenreId"] = new SelectList(genreList, "Id", "Name");
@@ -466,17 +485,17 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequestSizeLimit(1000000000)]
-        public async Task<IActionResult> CreateSong([Bind("Id,Title,Year,ArtistId,GenreId,UserId,PathS,PathV,PathP")] Song song, IFormFile uploadedFileP, IFormFile uploadedFileV, IFormFile uploadedFileS)
+        public async Task<IActionResult> CreateSong([Bind("Id,Title,Year,ArtistId,GenreId,UserId,PathS,PathV,PathP")] SongDTO song, IFormFile uploadedFileP, IFormFile uploadedFileV, IFormFile uploadedFileS)
         {
             string? role = HttpContext.Session.GetString("Role") ?? Request.Cookies["role"];
             string? login = HttpContext.Session.GetString("Login") ?? Request.Cookies["login"];
             if (role == "Admin")
             {
-                song.UserId = (int)await _srepo.GetUserIdByRole("Admin");
+                song.UserId = (int)await songService.GetUserIdByRole("Admin");
             }
             else if (!string.IsNullOrEmpty(login))
             {
-                song.UserId = (int)await _srepo.GetUserIdByLogin(login);
+                song.UserId = (int)await songService.GetUserIdByLogin(login);
             }
             if (uploadedFileP == null)
                 ModelState.AddModelError("", "Необходимо загрузить постер.");
@@ -518,41 +537,47 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                     }
                     song.PathS = pathS;
                 }
-                await _srepo.Create(song);
-                await _srepo.Save();
+                await songService.CreateSong(song);
                 return RedirectToAction(nameof(Index));
             }
-            var artistList = await _arepo.GetList();
-            var genreList = await _grepo.GetList();
-            var userList = await _urepo.GetList();
+            var artistList = await artistService.GetArtists();
+            var genreList = await genreService.GetGenres();
+            var userList = await userService.GetUsers();
 
-            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name");
-            ViewData["GenreId"] = new SelectList(genreList, "Id", "Name");
-            ViewData["UserId"] = new SelectList(userList, "Id", "Login");
+
+            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name", song.ArtistId);
+            ViewData["GenreId"] = new SelectList(genreList, "Id", "Name", song.GenreId);
+            ViewData["UserId"] = new SelectList(userList, "Id", "Login", song.UserId);
+
 
             return View(song);
         }
 
         public async Task<IActionResult> EditSong(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var song = await _srepo.Get(id.Value);
-            if (song == null)
-            {
-                return NotFound();
-            }
-            var artistList = await _arepo.GetList();
-            var genreList = await _grepo.GetList();
-            var userList = await _urepo.GetList();
+                var song = await songService.GetSong((int)id);
+          
+            var artistList = await artistService.GetArtists();
+            var genreList = await genreService.GetGenres();
+            var userList = await userService.GetUsers();
 
-            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name");
-            ViewData["GenreId"] = new SelectList(genreList, "Id", "Name");
-            ViewData["UserId"] = new SelectList(userList, "Id", "Login");
+
+            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name",song.ArtistId);
+            ViewData["GenreId"] = new SelectList(genreList, "Id", "Name",song.GenreId);
+            ViewData["UserId"] = new SelectList(userList, "Id", "Login",song.UserId);
             return View(song);
+            }
+            catch (ValidationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
 
@@ -561,7 +586,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditSong(int id, [Bind("Id,Title,Year,ArtistId,GenreId,UserId,PathS,PathV,PathP")] Song song, IFormFile uploadedFileP, IFormFile uploadedFileV, IFormFile uploadedFileS)
+        public async Task<IActionResult> EditSong(int id, [Bind("Id,Title,Year,ArtistId,GenreId,UserId,PathS,PathV,PathP")] SongDTO song, IFormFile uploadedFileP, IFormFile uploadedFileV, IFormFile uploadedFileS)
         {
             if (id != song.Id)
             {
@@ -571,11 +596,11 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             string? login = HttpContext.Session.GetString("Login") ?? Request.Cookies["login"];
             if (role == "Admin")
             {
-                song.UserId = (int)await _srepo.GetUserIdByRole("Admin");
+                song.UserId = (int)await songService.GetUserIdByRole("Admin");
             }
             else if (!string.IsNullOrEmpty(login))
             {
-                song.UserId = (int)await _srepo.GetUserIdByLogin(login);
+                song.UserId = (int)await songService.GetUserIdByLogin(login);
             }
             if (uploadedFileP == null)
                 ModelState.AddModelError("", "Необходимо загрузить постер.");
@@ -619,12 +644,12 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                         }
                         song.PathS = pathS;
                     }
-                    _srepo.Update(song);
-                    await _srepo.Save();
+                  await songService.UpdateSong(song);
+                
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _srepo.Exists(song.Id))
+                    if (!await songService.ExistsSong(song.Id))
                     {
                         return NotFound();
                     }
@@ -635,38 +660,41 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var artistList = await _arepo.GetList();
-            var genreList = await _grepo.GetList();
-            var userList = await _urepo.GetList();
+            var artistList = await artistService.GetArtists();
+            var genreList = await genreService.GetGenres();
+            var userList = await userService.GetUsers();
 
-            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name");
-            ViewData["GenreId"] = new SelectList(genreList, "Id", "Name");
-            ViewData["UserId"] = new SelectList(userList, "Id", "Login");
+
+            ViewData["ArtistId"] = new SelectList(artistList, "Id", "Name", song.ArtistId);
+            ViewData["GenreId"] = new SelectList(genreList, "Id", "Name", song.GenreId);
+            ViewData["UserId"] = new SelectList(userList, "Id", "Login", song.UserId);
+
             return View(song);
         }
 
         public async Task<IActionResult> DeleteSong(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                   return NotFound();
+                }
 
-            var song = await _srepo.Get(id.Value);
-            if (song == null)
+                SongDTO song = await songService.GetSong((int)id);
+                return View(song);
+            }
+            catch (ValidationException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
-
-            return View(song);
         }
 
         [HttpPost, ActionName("DeleteSong")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedSong(int id)
         {
-            await _srepo.Delete(id);
-            await _srepo.Save();
+            await songService.DeleteSong(id);
             return RedirectToAction(nameof(Index));
         }
     }

@@ -21,4 +21,8 @@
     <Folder Include="wwwroot\Files\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MusicPortal-Asp.Net(MVC).BLL\MusicPortal-Asp.Net(MVC).BLL.csproj" />
+  </ItemGroup>
+
 </Project>

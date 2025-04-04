@@ -63,5 +63,9 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             return mapper.Map<IEnumerable<Artist>, IEnumerable<ArtistDTO>>(await Database.Artists.GetList());
         }
 
+        public async Task<bool> ExistsArtist(int id)
+        {
+            return await Database.Artists.Exists(id);
+        }
     }
 }

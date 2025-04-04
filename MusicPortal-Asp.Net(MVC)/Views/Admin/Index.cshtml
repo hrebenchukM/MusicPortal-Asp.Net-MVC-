@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MusicPortal_Asp.Net_MVC_.Models.Song>
+﻿@model IEnumerable<MusicPortal_Asp.Net_MVC_.BLL.DTO.SongDTO>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -58,9 +58,9 @@
                                 <td>@Html.DisplayFor(modelItem => item.PathS)</td>
                                 <td>@Html.DisplayFor(modelItem => item.PathV)</td>
                                 <td>@Html.DisplayFor(modelItem => item.PathP)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Artist.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Genre.Name)</td>
-                                <td>@Html.DisplayFor(modelItem => item.User.Login)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Artist)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+                                <td>@Html.DisplayFor(modelItem => item.User)</td>
                                 <td>
                                     <div class="d-flex gap-1">
                                     <a asp-action="EditSong" asp-route-id="@item.Id" class="btn btn-outline-theme btn-sm">

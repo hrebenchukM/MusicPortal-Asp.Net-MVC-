@@ -1,4 +1,4 @@
-﻿@model MusicPortal_Asp.Net_MVC_.Models.Song
+﻿@model MusicPortal_Asp.Net_MVC_.BLL.DTO.SongDTO
 
 @{
     ViewData["Title"] = "Delete";
@@ -42,7 +42,7 @@
                     <img src=" @Html.DisplayFor(model => model.PathP)" class="song-cover" alt="Song cover">
                 <div>
                         <h5>@Html.DisplayFor(model => model.Title)</h5>
-                        <p class="mb-0">  @Html.DisplayFor(model => model.Genre.Name) •  @Html.DisplayFor(model => model.Artist.Name)</p>
+                        <p class="mb-0">  @Html.DisplayFor(model => model.Genre) •  @Html.DisplayFor(model => model.Artist)</p>
                 </div>
             </div>
 

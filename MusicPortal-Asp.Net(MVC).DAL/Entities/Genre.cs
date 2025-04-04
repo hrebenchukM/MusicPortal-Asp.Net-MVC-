@@ -1,5 +1,4 @@
-using MusicPortal_Asp.Net_MVC_.DAL.Entities;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace MusicPortal_Asp.Net_MVC_.DAL.Entities
 {  
@@ -7,6 +6,6 @@ namespace MusicPortal_Asp.Net_MVC_.DAL.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Song> Songs { get; set; }
+        public ICollection<Song>? Songs { get; set; }
     }
 }

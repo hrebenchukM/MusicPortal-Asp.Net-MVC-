@@ -1,4 +1,4 @@
-﻿@model MusicPortal_Asp.Net_MVC_.Models.Song
+﻿@model MusicPortal_Asp.Net_MVC_.BLL.DTO.SongDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -50,9 +50,9 @@
                         <h2 class="mb-3">@Html.DisplayFor(model => model.Title)</h2>
                         <div class="d-flex flex-column gap-2 text-muted">
                             <div><i class="fas fa-calendar me-2"></i> <strong>Year:</strong> @Html.DisplayFor(model => model.Year)</div>
-                            <div><i class="fas fa-user me-2"></i> <strong>Artist:</strong> @Html.DisplayFor(model => model.Artist.Name)</div>
-                            <div><i class="fas fa-music me-2"></i> <strong>Genre:</strong> @Html.DisplayFor(model => model.Genre.Name)</div>
-                            <div><i class="fas fa-upload me-2"></i> <strong>Uploaded by:</strong> @Html.DisplayFor(model => model.User.Login)</div>
+                            <div><i class="fas fa-user me-2"></i> <strong>Artist:</strong> @Html.DisplayFor(model => model.Artist)</div>
+                            <div><i class="fas fa-music me-2"></i> <strong>Genre:</strong> @Html.DisplayFor(model => model.Genre)</div>
+                            <div><i class="fas fa-upload me-2"></i> <strong>Uploaded by:</strong> @Html.DisplayFor(model => model.User)</div>
                             <div><i class="bi bi-music-note me-1"></i> <strong>Audio:</strong>   <audio controls src="@Url.Action("GetFile", "Home", new { fileName = Model.PathS })"></audio></div>
 
                           

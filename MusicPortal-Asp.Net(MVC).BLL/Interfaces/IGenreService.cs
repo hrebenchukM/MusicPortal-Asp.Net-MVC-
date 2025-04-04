@@ -9,5 +9,7 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Interfaces
         Task DeleteGenre(int id);
         Task<GenreDTO> GetGenre(int id);
         Task<IEnumerable<GenreDTO>> GetGenres();
+
+        Task<bool> ExistsGenre(int id);
     }
 }

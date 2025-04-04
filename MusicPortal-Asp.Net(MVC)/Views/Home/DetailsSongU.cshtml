@@ -1,4 +1,4 @@
-﻿@model MusicPortal_Asp.Net_MVC_.Models.Song
+﻿@model MusicPortal_Asp.Net_MVC_.BLL.DTO.SongDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -60,15 +60,15 @@
                                     </div>
                                     <div class="song-info">
                                         <i class="fas fa-user me-2"></i>
-                                        <span><strong>Artist:</strong> @Html.DisplayFor(model => model.Artist.Name)</span>
+                                        <span><strong>Artist:</strong> @Html.DisplayFor(model => model.Artist)</span>
                                     </div>
                                     <div class="song-info">
                                         <i class="fas fa-music me-2"></i>
-                                        <span><strong>Genre:</strong> @Html.DisplayFor(model => model.Genre.Name)</span>
+                                        <span><strong>Genre:</strong> @Html.DisplayFor(model => model.Genre)</span>
                                     </div>
                                     <div class="song-info">
                                         <i class="fas fa-upload me-2"></i>
-                                        <span><strong>Uploaded by:</strong> @Html.DisplayFor(model => model.User.Login)</span>
+                                        <span><strong>Uploaded by:</strong> @Html.DisplayFor(model => model.User)</span>
                                     </div>
                                 </div>
                             </div>

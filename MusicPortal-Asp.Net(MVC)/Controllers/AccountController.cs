@@ -1,21 +1,19 @@
 ﻿using MusicPortal_Asp.Net_MVC_.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Text;
-using Microsoft.AspNetCore.Http;
-using MusicPortal_Asp.Net_MVC_.Repository;
 using MusicPortal_Asp.Net_MVC_.Services;
+using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
+using MusicPortal_Asp.Net_MVC_.BLL.DTO;
 
 namespace MusicPortal_Asp.Net_MVC_.Controllers
 {
 
     public class AccountController : Controller
     {
-        private readonly IUserRepository repo;
+        private readonly IUserService userService;
         private readonly IPassword passwordService;
-        public AccountController(IUserRepository r, IPassword ps)
+        public AccountController(IUserService userserv, IPassword ps)
         {
-            repo = r;
+            userService = userserv;
             passwordService = ps;
         }
         public IActionResult LoginAsGuest()
@@ -38,12 +36,12 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!await repo.AnyUsers())
+                if (!await userService.AnyUsers())
                 {
                     ModelState.AddModelError("", "No users found.");
                     return View(logon);
                 }
-                var user = await repo.GetUserByLogin(logon.Login);
+                var user = await userService.GetUserByLogin(logon.Login);
                 if (user == null)
                 {
                     ModelState.AddModelError("", "Wrong login!");
@@ -93,7 +91,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User();
+                UserDTO user = new UserDTO();
                 user.FirstName = reg.FirstName;
                 user.LastName = reg.LastName;
                 user.Login = reg.Login;
@@ -102,8 +100,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 user.Salt = passwordService.GenerateSalt(); ;
                 user.Password = passwordService.HashPassword(user.Salt, reg.Password);
 
-                await repo.Create(user);
-                await repo.Save();
+                await userService.CreateUser(user);
                 return RedirectToAction("Login");
             }
 

@@ -63,5 +63,9 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             return mapper.Map<IEnumerable<Genre>, IEnumerable<GenreDTO>>(await Database.Genres.GetList());
         }
 
+        public async Task<bool> ExistsGenre(int id)
+        {
+            return await Database.Genres.Exists(id);
+        }
     }
 }

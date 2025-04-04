@@ -9,5 +9,6 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Interfaces
         Task DeleteArtist(int id);
         Task<ArtistDTO> GetArtist(int id);
         Task<IEnumerable<ArtistDTO>> GetArtists();
+        Task<bool> ExistsArtist(int id);
     }
 }

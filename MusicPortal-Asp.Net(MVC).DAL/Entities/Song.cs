@@ -18,7 +18,7 @@ namespace MusicPortal_Asp.Net_MVC_.DAL.Entities
         public string? PathV { get; set; }
         public string? PathP { get; set; }
 
-        public Genre? Artist { get; set; }
+        public Artist? Artist { get; set; }
         public Genre? Genre { get; set; }
         public User? User { get; set; }
     }

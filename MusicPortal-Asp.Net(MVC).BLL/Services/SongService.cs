@@ -91,5 +91,23 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             return mapper.Map<IEnumerable<Song>, IEnumerable<SongDTO>>(await Database.Songs.GetList());
         }
 
+
+
+
+        public async Task<bool> ExistsSong(int id)
+        {
+            return await Database.Songs.Exists(id);
+        }
+
+
+        public async Task<int?> GetUserIdByRole(string role)
+        {
+            return await Database.Songs.GetUserIdByRole(role);
+        }
+
+        public async Task<int?> GetUserIdByLogin(string login)
+        {
+            return await Database.Songs.GetUserIdByLogin(login);
+        }
     }
 }
