@@ -22,12 +22,12 @@ namespace MusicPortal_Asp.Net_MVC_.DAL.Repositories
                                     .Include(s => s.User)
                                     .ToListAsync();
         }
-        public async Task<IQueryable<Song>> GetIQueryable()
+        public IQueryable<Song> GetIQueryable()
         {
             return db.Songs
-                           .Include(s => s.Artist)
-                           .Include(s => s.Genre)
-                           .Include(s => s.User);
+                     .Include(s => s.Artist)
+                     .Include(s => s.Genre)
+                     .Include(s => s.User);
         }
 
         public async Task<Song> Get(int id)

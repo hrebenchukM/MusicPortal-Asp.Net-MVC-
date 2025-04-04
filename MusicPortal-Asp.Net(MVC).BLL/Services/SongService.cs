@@ -82,14 +82,25 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
         }
 
         // Automapper позволяет проецировать одну модель на другую, что позволяет сократить объемы кода и упростить программу.
-
+        //Метод возвращает IEnumerable<SongDTO>. Это коллекция объектов DTO, полученных после выполнения запроса к базе данных.
         public async Task<IEnumerable<SongDTO>> GetSongs()
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Song, SongDTO>()
             .ForMember("Artist", opt => opt.MapFrom(c => c.Artist.Name)).ForMember("Genre", opt => opt.MapFrom(c => c.Genre.Name)).ForMember("User", opt => opt.MapFrom(c => c.User.Login)));
             var mapper = new Mapper(config);
-            return mapper.Map<IEnumerable<Song>, IEnumerable<SongDTO>>(await Database.Songs.GetList());
+            //Запрос к базе данных выполняется асинхронно и возвращает список объектов типа Song
+            return mapper.Map<IEnumerable<Song>, IEnumerable<SongDTO>>(await Database.Songs.GetList());//Маппинг выполняется в памяти, а не в запросе к базе данных, поэтому все элементы коллекции сначала загружаются в память
         }
+        //Метод возвращает IQueryable<SongDTO>. Это запрос, который можно дополнительно изменять и исполнять на базе данных.
+        public IQueryable<SongDTO> GetSongsIQueryable()
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Song, SongDTO>()
+             .ForMember("Artist", opt => opt.MapFrom(c => c.Artist.Name)).ForMember("Genre", opt => opt.MapFrom(c => c.Genre.Name)).ForMember("User", opt => opt.MapFrom(c => c.User.Login)));
+            var mapper = config.CreateMapper();
+            //Позволяет работать с данными в виде запроса, а не с уже загруженными объектами
+            return mapper.ProjectTo<SongDTO>(Database.Songs.GetIQueryable());//ProjectTo<SongDTO> применяется непосредственно к IQueryable, что означает, что преобразование объектов Song в SongDTO происходит на уровне базы данных.
+        }
+
 
 
 

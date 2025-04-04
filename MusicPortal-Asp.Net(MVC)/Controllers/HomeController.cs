@@ -40,7 +40,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 int pageSize = 4; // количество элементов на странице
 
                 //фильтрация
-                IQueryable<SongDTO> songs = (IQueryable<SongDTO>)songService.GetSongs();//получаем всю коллекцию игроков
+                IQueryable<SongDTO> songs = (IQueryable<SongDTO>)songService.GetSongsIQueryable();//получаем всю коллекцию игроков
 
                 if (genre != 0)
                 {

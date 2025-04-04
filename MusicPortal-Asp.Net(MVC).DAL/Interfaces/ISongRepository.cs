@@ -9,6 +9,7 @@ namespace MusicPortal_Asp.Net_MVC_.DAL.Interfaces
         Task<int?> GetUserIdByRole(string role);
 
         Task<int?> GetUserIdByLogin(string login);
-        Task<IQueryable<Song>> GetIQueryable();
+        IQueryable<Song> GetIQueryable();
+
     }
 }

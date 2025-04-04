@@ -1,4 +1,5 @@
-﻿using MusicPortal_Asp.Net_MVC_.BLL.DTO;
+﻿using AutoMapper;
+using MusicPortal_Asp.Net_MVC_.BLL.DTO;
 
 namespace MusicPortal_Asp.Net_MVC_.BLL.Interfaces
 {
@@ -9,6 +10,7 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Interfaces
         Task DeleteSong(int id);
         Task<SongDTO> GetSong(int id);
         Task<IEnumerable<SongDTO>> GetSongs();
+        IQueryable<SongDTO> GetSongsIQueryable();
 
         Task<bool> ExistsSong(int id);
         Task<int?> GetUserIdByRole(string role);
