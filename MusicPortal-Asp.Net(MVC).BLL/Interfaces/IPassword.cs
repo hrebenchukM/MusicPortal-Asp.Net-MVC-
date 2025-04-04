@@ -1,7 +1,6 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using MusicPortal_Asp.Net_MVC_.BLL.DTO;
 
-namespace MusicPortal_Asp.Net_MVC_.Services
+namespace MusicPortal_Asp.Net_MVC_.BLL.Interfaces
 {
     public interface IPassword
     {

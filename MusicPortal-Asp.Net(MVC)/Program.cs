@@ -1,4 +1,4 @@
-using MusicPortal_Asp.Net_MVC_.Services;
+
 using Microsoft.EntityFrameworkCore;
 using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
 using MusicPortal_Asp.Net_MVC_.BLL.Services;
@@ -16,7 +16,7 @@ builder.Services.AddSession(options =>
 // Получаем строку подключения из файла конфигурации
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddScoped<IPassword, PasswordService>();
+builder.Services.AddTransient<IPassword, PasswordService>();
 
 builder.Services.AddSoccerContext(connection);
 builder.Services.AddUnitOfWorkService();

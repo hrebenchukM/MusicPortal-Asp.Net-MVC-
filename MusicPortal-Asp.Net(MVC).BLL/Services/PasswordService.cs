@@ -1,7 +1,13 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using MusicPortal_Asp.Net_MVC_.BLL.DTO;
+using MusicPortal_Asp.Net_MVC_.DAL.Entities;
+using MusicPortal_Asp.Net_MVC_.DAL.Interfaces;
+using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
+using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
 
-namespace MusicPortal_Asp.Net_MVC_.Services
+
+namespace MusicPortal_Asp.Net_MVC_.BLL.Services
 {
     public class PasswordService : IPassword
     {
