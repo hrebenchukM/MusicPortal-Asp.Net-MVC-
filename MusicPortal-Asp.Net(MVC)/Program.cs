@@ -6,25 +6,28 @@ using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Все сессии работают поверх объекта IDistributedCache, и ASP.NET Core 
+// предоставляет встроенную реализацию IDistributedCache
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(180);
-    options.Cookie.Name = "Session";
+    options.IdleTimeout = TimeSpan.FromMinutes(10); // Длительность сеанса (тайм-аут завершения сеанса)
+    options.Cookie.Name = "Session"; // Каждая сессия имеет свой идентификатор, который сохраняется в куках.
 
 });
 // Получаем строку подключения из файла конфигурации
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddTransient<IPassword, PasswordService>();
+builder.Services.AddScoped<IPassword, PasswordService>();
 
 builder.Services.AddSoccerContext(connection);
 builder.Services.AddUnitOfWorkService();
-builder.Services.AddTransient<IArtistService, ArtistService>();//нет проблем ибо это верхний и средний слой мы взяли добавили ссылку Add project refernce
-builder.Services.AddTransient<IGenreService, GenreService>();
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<ISongService, SongService>();
+builder.Services.AddScoped<IArtistService, ArtistService>();//нет проблем ибо это верхний и средний слой мы взяли добавили ссылку Add project refernce
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISongService, SongService>();
 
+builder.Services.AddScoped<ILangRead, ReadLangServices>();
 
 
 // Добавляем сервисы MVC
@@ -32,7 +35,7 @@ builder.Services.AddControllersWithViews();
 
 
 var app = builder.Build();
-app.UseSession();
+app.UseSession();   // Добавляем middleware-компонент для работы с сессиями
 
 app.UseStaticFiles(); // обрабатывает запросы к файлам в папке wwwroot
 

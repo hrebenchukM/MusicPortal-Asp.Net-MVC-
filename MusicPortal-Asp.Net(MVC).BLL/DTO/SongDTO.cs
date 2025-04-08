@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MusicPortal_Asp.Net_MVC_.DAL.Entities;
 
 namespace MusicPortal_Asp.Net_MVC_.BLL.DTO
 {
@@ -9,11 +8,12 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.DTO
     public class SongDTO
     {
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
+        //все указываем идентификаторами а не поле должно быть заполнено
+        //сообщение об ошибки будет браться из файлов ресурсов по идентификатору
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+                 ErrorMessageResourceName = "TitleRequired")]
+        [Display(Name = "Title", ResourceType = typeof(Resources.Resource))]
         public string? Title { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public int Year { get; set; }
 
         public string? PathS { get; set; }
