@@ -15,21 +15,24 @@
 </head>
 <body data-theme="dark" class="bg">
 
-    
-        <header class=" d-flex justify-content-between align-items-center mb-5">
+
+    <header class=" ms-auto d-flex justify-content-between align-items-center mb-5">
         <h4><i class="bi bi-music-note-beamed"></i> @Resources.Resource.MusicPortal</h4>
-
-        <form asp-action="ChangeCulture" asp-controller="Home">
-            <select name="lang">
-                <option disabled selected>@Resources.Resource.ChooseLang</option>
-                @foreach (Language it in MyLangRead.languageList())
-                {
-                    <option value=@it.ShortName>@it.Name</option>
-                }
-            </select>
-            <input type="submit" name="submit" value="@Resources.Resource.ChooseLang">
-        </form>
-
+        <div class="language-selector  ms-auto d-flex align-items-center">
+            <form asp-action="ChangeCulture" asp-controller="Home"class="d-flex align-items-center">
+                <select name="lang" class="form-select me-2">
+                    <option disabled selected>@Resources.Resource.ChooseLang</option>
+                    @foreach (Language it in MyLangRead.languageList())
+                    {
+                        <option value=@it.ShortName>@it.Name</option>
+                    }
+                </select>
+                <button type="submit" name="submit" value="@Resources.Resource.ChooseLang" class="btn btn-theme">
+                    <i class="bi bi-translate me-2"></i>
+                </button>
+            </form>
+        </div>
+     
 
         <div class="auth-buttons ms-auto">
                 @if (Context.Session.GetString("Login") == null && Context.Request.Cookies["login"] == null)

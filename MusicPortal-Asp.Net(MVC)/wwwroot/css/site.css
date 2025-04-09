@@ -508,3 +508,33 @@ audio::-webkit-media-controls-timeline {
         cursor: not-allowed;
         pointer-events: none;
     }
+
+
+
+
+.language-selector select {
+    background-color: var(--secondary);
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px; 
+}
+
+    .language-selector select:hover {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(125, 75, 189, 0.1);
+    }
+
+    .language-selector select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(125, 75, 189, 0.2);
+    }
+
+.language-selector form {
+    display: flex;
+    align-items: center; 
+}
