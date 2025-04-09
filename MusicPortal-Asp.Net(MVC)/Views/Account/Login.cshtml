@@ -8,7 +8,7 @@
 {
 <div class="container">
         <div class="form-container shadow-lg">
-                    <h2 class="text-center mb-4"> Authorization</h2>
+            <h2 class="text-center mb-4"> @Resources.Resource.Login</h2>
                     <form asp-action="Login" method="post">
                         @Html.AntiForgeryToken()
 
@@ -26,16 +26,16 @@
 
                     <div class="mb-4 form-check">
                     <input asp-for="RememberMe" class="form-check-input" />
-                    <label asp-for="RememberMe" class="form-check-label">Запомнить меня</label>
+                    <label asp-for="RememberMe" class="form-check-label">@Resources.Resource.RememberMe</label>
                     </div>
 
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-theme w-100" value="Logon">Login</button>
+                    <button type="submit" class="btn btn-theme w-100" value="Logon">@Resources.Resource.Login</button>
 
-                    <a class="btn btn-outline-theme w-100" asp-area="" asp-controller="Account" asp-action="LoginAsGuest">Login as Guest </a>
+                    <a class="btn btn-outline-theme w-100" asp-area="" asp-controller="Account" asp-action="LoginAsGuest">@Resources.Resource.LoginAsGuest </a>
                     <p class="text-center mt-4">
                                 Don't have an account?
-                        <a class="link-like"  asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        <a class="link-like" asp-area="" asp-controller="Account" asp-action="Register">@Resources.Resource.Register</a>
                     </p>
                     </div>
                     </form>

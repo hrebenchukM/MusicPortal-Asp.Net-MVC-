@@ -126,4 +126,118 @@
   <data name="Title" xml:space="preserve">
     <value>Titre</value>
   </data>
+  <data name="MusicPortal" xml:space="preserve">
+    <value>Portail Musical</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Se connecter</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>S'inscrire</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Se déconnecter</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Année</value>
+  </data>
+  <data name="PathS" xml:space="preserve">
+    <value> Le chemin de l’audio</value>
+  </data>
+  <data name="PathV" xml:space="preserve">
+    <value>Le chemin de la vidéo</value>
+  </data>
+  <data name="PathP" xml:space="preserve">
+    <value>Le chemin de l'affiche</value>
+  </data>
+  <data name="YearRequired" xml:space="preserve">
+    <value>Le champ 'Année' doit être rempli</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="LoginRequired" xml:space="preserve">
+    <value>Le champ 'Se connecter' doit être rempli</value>
+  </data>
+  <data name="RegisterRequired" xml:space="preserve">
+    <value>Le champ 'S'inscrire' doit être rempli</value>
+  </data>
+  <data name="LogoutRequired" xml:space="preserve">
+    <value>Le champ 'Se déconnecter' doit être rempli</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Le champ 'Mot de passe' doit être rempli</value>
+  </data>
+  <data name="MusicPortalRequired" xml:space="preserve">
+    <value>Le champ 'Portail Musical' doit être rempli</value>
+  </data>
+  <data name="PathPRequired" xml:space="preserve">
+    <value>Le champ 'Le chemin de l'affiche' doit être rempli</value>
+  </data>
+  <data name="PathVRequired" xml:space="preserve">
+    <value>Le champ 'Le chemin de la vidéo' doit être rempli</value>
+  </data>
+  <data name="PathSRequired" xml:space="preserve">
+    <value>Le champ ' Le chemin de l’audio' doit être rempli</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Prénom</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nom de famille</value>
+  </data>
+  <data name="NameA" xml:space="preserve">
+    <value> Nom de l’artiste</value>
+  </data>
+  <data name="NameG" xml:space="preserve">
+    <value>Nom du genre</value>
+  </data>
+  <data name="FirstNameRequired" xml:space="preserve">
+    <value>Le champ 'Prénomr' doit être rempli</value>
+  </data>
+  <data name="LastNameRequired" xml:space="preserve">
+    <value>Le champ 'Nom de famille' doit être rempli</value>
+  </data>
+  <data name="NameARequired" xml:space="preserve">
+    <value>Le champ ' Nom de l’artiste' doit être rempli</value>
+  </data>
+  <data name="NameGRequired" xml:space="preserve">
+    <value>Le champ 'Nom du genre' doit être rempli</value>
+  </data>
+  <data name="InvalidEmailAddress" xml:space="preserve">
+    <value>Adresse invalide</value>
+  </data>
+  <data name="PasswordsDoNotMatch" xml:space="preserve">
+    <value>Les mots de passe ne correspondent pas</value>
+  </data>
+  <data name="PasswordConfirmRequired" xml:space="preserve">
+    <value>La confirmation du mot de passe est requise</value>
+  </data>
+  <data name="PasswordConfirm" xml:space="preserve">
+    <value> Confirmation du mot de passe</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Souviens-toi de moi</value>
+  </data>
+  <data name="LoginAsGuest" xml:space="preserve">
+    <value> Connexion en tant qu'invité</value>
+  </data>
+  <data name="CreateSong" xml:space="preserve">
+    <value>Créer une chanson</value>
+  </data>
+  <data name="Songs" xml:space="preserve">
+    <value>Chansons</value>
+  </data>
+  <data name="UploadedBy" xml:space="preserve">
+    <value>Téléchargé par</value>
+  </data>
+  <data name="PlayNow" xml:space="preserve">
+    <value>Jouer maintenant</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Bienvenue</value>
+  </data>
 </root>

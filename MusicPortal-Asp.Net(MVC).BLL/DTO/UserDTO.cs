@@ -9,26 +9,12 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.DTO
     public class UserDTO
     {
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public string? FirstName { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public string? LastName { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public string? Login { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public string? Password { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public string? Salt { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public string? Role { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
         public bool IsActive { get; set; }
     }
 }

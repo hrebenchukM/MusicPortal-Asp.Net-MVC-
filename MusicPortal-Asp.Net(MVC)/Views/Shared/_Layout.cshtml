@@ -1,5 +1,7 @@
 ﻿@inject MusicPortal_Asp.Net_MVC_.BLL.Interfaces.ILangRead MyLangRead
 ﻿@using MusicPortal_Asp.Net_MVC_.DAL.Entities
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +17,7 @@
 
     
         <header class=" d-flex justify-content-between align-items-center mb-5">
-        <h4><i class="bi bi-music-note-beamed"></i>  Music Portal</h4>
+        <h4><i class="bi bi-music-note-beamed"></i> @Resources.Resource.MusicPortal</h4>
 
         <form asp-action="ChangeCulture" asp-controller="Home">
             <select name="lang">
@@ -32,15 +34,15 @@
         <div class="auth-buttons ms-auto">
                 @if (Context.Session.GetString("Login") == null && Context.Request.Cookies["login"] == null)
                 {
-                    <a class="btn btn-outline-theme me-2" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                    <a class="btn btn-theme" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                    <a class="btn btn-outline-theme me-2" asp-area="" asp-controller="Account" asp-action="Login">@Resources.Resource.Login</a>
+                    <a class="btn btn-theme" asp-area="" asp-controller="Account" asp-action="Register">@Resources.Resource.Register</a>
                 }
                 else
                 {
                     var firstName = Context.Session.GetString("FirstName") ?? Context.Request.Cookies["login"];
-                    <span class="welcome-text me-3">Welcome, @firstName!</span>
+                    <span class="welcome-text me-3">@Resources.Resource.Welcome, @firstName!</span>
                     <a class="btn btn-danger" asp-area="" asp-controller="Home" asp-action="Logout">
-                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                       <i class="fas fa-sign-out-alt me-1"></i>@Resources.Resource.Logout
                     </a>
 
                 }

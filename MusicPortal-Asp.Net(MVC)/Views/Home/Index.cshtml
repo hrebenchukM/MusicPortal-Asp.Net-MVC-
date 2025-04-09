@@ -15,7 +15,7 @@
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <h4><i class="bi bi-music-note-beamed"></i>  Music Portal</h4>
+            <h4><i class="bi bi-music-note-beamed"></i>   @Resources.Resource.MusicPortal</h4>
             <button class="sidebar-close" onclick="toggleSidebar()">
                 <i class="bi bi-x-lg"></i>
             </button>
@@ -26,11 +26,11 @@
                 {
 
                     <a href="@Url.Action("CreateSongU", "Home")">
-                        <i class="bi bi-music-note-list"></i> Create Song
+                        <i class="bi bi-music-note-list"></i> @Resources.Resource.CreateSong
                     </a>
                 }
                 <a href="@Url.Action("Index", "Home")" class="active">
-                    <i class="bi bi-music-note-list"></i>Songs
+                    <i class="bi bi-music-note-list"></i>@Resources.Resource.Songs
                 </a>
             </li>
          
@@ -41,7 +41,7 @@
     
 
     <div class="main-content container">
-        <h2><i class="bi bi-music-note-list me-2"></i>All Songs</h2>
+        <h2><i class="bi bi-music-note-list me-2"></i>@Resources.Resource.Songs</h2>
         <div class="d-flex gap-3">
 
             <form method="get">
@@ -49,15 +49,15 @@
                     <div class="input-group mb-3">
                        <span class="input-group-text  border-end-0">
                             <i class="bi bi-search"></i>
-                            <label>Artist: </label>
+                            <label>@Resources.Resource.NameA: </label>
                        </span>
                         <input name="artist" value="@Model.FilterViewModel.SelectedArtist" class="form-control border-start-0" />
                      </div>
 
                     <div class="mb-3">
-                        <label>Genre: </label>
+                        <label>@Resources.Resource.NameG: </label>
                         <select name="genre" asp-items="Model.FilterViewModel.Genres" class="form-select"></select>
-                        <button type="submit" value="Filter" class="btn btn-theme btn-lg">Filter</button>
+                        <button type="submit" value="Filter" class="btn btn-theme btn-lg">@Resources.Resource.Filter</button>
                     </div>
                
                 </div>
@@ -72,28 +72,26 @@
                           
                             <sort-header action="Index" up="@Model.SortViewModel.Up"
                                          current="@Model.SortViewModel.Current" property="@Model.SortViewModel.TitleSort">
-                                Title
+                                @Resources.Resource.Title
                             </sort-header>
                             <sort-header action="Index" up="@Model.SortViewModel.Up"
                                          current="@Model.SortViewModel.Current" property="@Model.SortViewModel.YearSort">
-                                Year
+                                @Resources.Resource.Year
                             </sort-header>
 
                             <sort-header action="Index" up="@Model.SortViewModel.Up"
                                          current="@Model.SortViewModel.Current" property="@Model.SortViewModel.ArtistSort">
-                                Artist
+                                @Resources.Resource.NameA
                             </sort-header>
 
                             <sort-header action="Index" up="@Model.SortViewModel.Up"
                                          current="@Model.SortViewModel.Current" property="@Model.SortViewModel.GenreSort">
-                                Genre
+                                @Resources.Resource.NameG
                             </sort-header>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
         </div>
 
@@ -120,7 +118,7 @@
                             </div>
                             <div class="mt-auto">
                                 <a asp-action="DetailsSongU" asp-route-id="@item.Id" class="btn btn-theme w-100">
-                                    <i class="bi bi-play-circle-fill me-2"></i> Play now
+                                    <i class="bi bi-play-circle-fill me-2"></i>  @Resources.Resource.PlayNow
                                 </a>
                             </div>
                         </div>

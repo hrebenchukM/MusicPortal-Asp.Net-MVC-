@@ -17,7 +17,7 @@
 
     <div class="sidebar">
         <div class="sidebar-header">
-            <h4><i class="bi bi-music-note-beamed"></i>  Music Portal</h4>
+            <h4><i class="bi bi-music-note-beamed"></i>  @Resources.Resource.MusicPortal</h4>
             <button class="sidebar-close" onclick="toggleSidebar()">
                 <i class="bi bi-x-lg"></i>
             </button>
@@ -28,11 +28,11 @@
                 {
 
                     <a href="@Url.Action("CreateSongU", "Home")">
-                        <i class="bi bi-music-note-list"></i> Create Song
+                        <i class="bi bi-music-note-list"></i> @Resources.Resource.CreateSong
                     </a>
                 }
                 <a href="@Url.Action("Index", "Home")" class="active">
-                    <i class="bi bi-music-note-list"></i>Songs
+                    <i class="bi bi-music-note-list"></i>@Resources.Resource.Songs
                 </a>
             </li>
 
@@ -44,7 +44,7 @@
 
     <div class="main-content container">
             <div class="form-container">
-                <h2 class="text-center mb-4">Upload Song</h2>
+            <h2 class="text-center mb-4">@Resources.Resource.CreateSong</h2>
 
                 <form asp-action="CreateSongU" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -61,38 +61,38 @@
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Artist" class="form-label ">Artist</label>
+                    <label asp-for="Artist" class="form-label ">@Resources.Resource.NameA</label>
                         <select asp-for="ArtistId" class="form-control" asp-items="ViewBag.ArtistId"></select>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="Genre" class="form-label ">Genre</label>
+                    <label asp-for="Genre" class="form-label ">@Resources.Resource.NameG</label>
                         <select asp-for="GenreId" class="form-control" asp-items="ViewBag.GenreId"></select>
                     </div>
                    
 
                     <div class="mb-3">
-                        <label asp-for="PathS" class="control-label">Audio File</label>
+                    <label asp-for="PathS" class="control-label">@Resources.Resource.PathS</label>
                         <input type="file" name="uploadedFileS" class="form-control "/>
                         <span asp-validation-for="PathS" class="text-danger"></span>
 
                     </div>
 
                        <div class="mb-3">
-                        <label asp-for="PathV" class="control-label">Cover Video</label>
+                    <label asp-for="PathV" class="control-label">@Resources.Resource.PathV</label>
                         <input type="file" name="uploadedFileV" class="form-control rounded-3" />
                         <span asp-validation-for="PathV" class="text-danger"></span>
 
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="PathP" class="control-label">Cover Image</label>
+                    <label asp-for="PathP" class="control-label">@Resources.Resource.PathP</label>
                         <input type="file" name="uploadedFileP" class="form-control" />
                         <span asp-validation-for="PathP" class="text-danger"></span>
                   
                     </div>
 
 
-                    <button type="submit" class="btn btn-theme w-100" value="Create" >Upload Song</button>
+                <button type="submit" class="btn btn-theme w-100" value="Create">@Resources.Resource.CreateSong</button>
                 </form>
             </div>
         </div>

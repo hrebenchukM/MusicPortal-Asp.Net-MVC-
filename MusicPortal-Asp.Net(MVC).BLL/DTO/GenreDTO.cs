@@ -8,8 +8,9 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.DTO
     public class GenreDTO
     {
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Поле должно быть установлено.")]
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+               ErrorMessageResourceName = "NameGRequired")]
+        [Display(Name = "NameG", ResourceType = typeof(Resources.Resource))]
         public string? Name { get; set; }
     }
 }

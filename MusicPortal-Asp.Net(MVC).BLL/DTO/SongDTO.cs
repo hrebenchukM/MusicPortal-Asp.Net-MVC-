@@ -14,10 +14,26 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.DTO
                  ErrorMessageResourceName = "TitleRequired")]
         [Display(Name = "Title", ResourceType = typeof(Resources.Resource))]
         public string? Title { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+             ErrorMessageResourceName = "YearRequired")]
+        [Display(Name = "Year", ResourceType = typeof(Resources.Resource))]
         public int Year { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+          ErrorMessageResourceName = "PathSRequired")]
+        [Display(Name = "PathS", ResourceType = typeof(Resources.Resource))]
         public string? PathS { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+          ErrorMessageResourceName = "PathVRequired")]
+        [Display(Name = "PathV", ResourceType = typeof(Resources.Resource))]
+
         public string? PathV { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Resources.Resource),
+          ErrorMessageResourceName = "PathPRequired")]
+        [Display(Name = "PathP", ResourceType = typeof(Resources.Resource))]
         public string? PathP { get; set; }
 
         public int? ArtistId { get; set; }
