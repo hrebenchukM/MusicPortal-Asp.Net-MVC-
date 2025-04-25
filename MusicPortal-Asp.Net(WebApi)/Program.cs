@@ -33,22 +33,23 @@ builder.Services.AddScoped<ILangRead, ReadLangServices>();
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();//для интерфейса
+//builder.Services.AddEndpointsApiExplorer();
+
+//builder.Services.AddSwaggerGen();//для интерфейса
 
 var app = builder.Build();
 
+app.UseStaticFiles();
 
 app.UseSession();   // Добавляем middleware-компонент для работы с сессиями
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())//чтоб появился сам интерфейс, при словии если у нас приложение в состоянии разработки (не релиза и не тестирования)
-{// "ASPNETCORE_ENVIRONMENT": "Development"
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())//чтоб появился сам интерфейс, при словии если у нас приложение в состоянии разработки (не релиза и не тестирования)
+//{// "ASPNETCORE_ENVIRONMENT": "Development"
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
 
 app.UseHttpsRedirection();//перенаправление чтоб запросы шли по протоколу https 

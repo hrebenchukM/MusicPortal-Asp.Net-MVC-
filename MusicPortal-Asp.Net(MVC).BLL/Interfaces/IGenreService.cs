@@ -4,7 +4,7 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Interfaces
 {
     public interface IGenreService 
     {
-        Task CreateGenre(GenreDTO genreDto);
+        Task<GenreDTO> CreateGenre(GenreDTO genreDto);
         Task UpdateGenre(GenreDTO genreDto);
         Task DeleteGenre(int id);
         Task<GenreDTO> GetGenre(int id);

@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Админка </title>
+    <link href="/site.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="mb-4">
+            <button id="btn-artists" class="btn btn-primary btn-sm">Артисты</button>
+            <button id="btn-genres" class="btn btn-secondary btn-sm">Жанры</button>
+        </div>
+
+        <div id="artists-container" style="display:none;">
+            <h2 class="display-4 text-gradient">Список артистов</h2>
+            <form name="artistForm" class="mb-4">
+                <input type="hidden" name="Id" value="0" />
+                <div class="form-group">
+                    <label for="name" class="control-label">Имя:</label>
+                    <input class="form-control" name="name" />
+                </div>
+                <div class="panel-body">
+                    <a id="submit" class="btn btn-theme">Сохранить</a>
+                    <a id="reset" class="btn btn-secondary">Сбросить</a>
+                </div>
+            </form>
+            <table class="table table-condensed table-striped table-responsive">
+                <thead><tr><th>Id</th><th>Имя</th><th></th></tr></thead>
+                <tbody>
+                    <!--пусто-->
+                </tbody>
+            </table>
+        </div>
+        <div id="genres-container" style="display:none;">
+            <h2 class="display-4 text-gradient">Список жанров</h2>
+            <form name="genreForm" class="mb-4">
+                <input type="hidden" name="Id" value="0" />
+                <div class="form-group">
+                    <label for="genreName" class="control-label">Название:</label>
+                    <input class="form-control" name="genreName" />
+                </div>
+                <div class="panel-body">
+                    <a id="submitGenre" class="btn btn-theme">Сохранить</a>
+                    <a id="resetGenre" class="btn btn-secondary">Сбросить</a>
+                </div>
+            </form>
+            <table class="table table-condensed table-striped table-responsive">
+                <thead><tr><th>Id</th><th>Название</th><th></th></tr></thead>
+                <tbody>
+                    <!--пусто-->
+                </tbody>
+            </table>
+        </div>
+        
+        </div>
+        <script>
+
+            // загрузка студентов
+            GetArtists();
+
+            GetGenres();
+
+
+            $("#btn-artists").on("click", function () {
+                $('#genres-container').hide();
+                $('#artists-container').show();
+            });
+
+            $("#btn-genres").on("click", function () {
+                $('#artists-container').hide();
+                $('#genres-container').show();
+            });
+
+            // Получение всех студентов
+            function GetArtists() {
+                $.ajax({
+                    url: 'https://localhost:7290/api/artists',
+                    method: "GET",
+                    contentType: "application/json",
+                    success: function (artists) {//сюда придет массив
+
+                        let rows = "";
+                        $.each(artists, function (index, artist) {
+                            // добавляем полученные элементы в таблицу
+                            rows += row(artist);
+                        })
+                        $("#artists-container table tbody").html(rows);
+
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                });
+            }
+
+            function GetGenres() {
+                $.ajax({
+                    url: 'https://localhost:7290/api/genres',
+                    method: "GET",
+                    contentType: "application/json",
+                    success: function (genres) {//сюда придет массив
+
+                        let rows = "";
+                        $.each(genres, function (index, genre) {
+                            // добавляем полученные элементы в таблицу
+                            rows += rowGenre(genre);
+                        })
+                        $("#genres-container table tbody").html(rows);
+
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                });
+            }
+
+
+
+            // Получение одного студента
+            function GetArtist(id) {
+                $.ajax({
+                    url: 'https://localhost:7290/api/artists/' + id,
+                    method: 'GET',
+                    contentType: "application/json",
+                    success: function (artist) {
+                        let form = document.forms["genreForm"];
+                        form.elements["Id"].value = artist.id;
+                        form.elements["name"].value = artist.name;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                });
+            }
+
+
+            function GetGenre(id) {
+                $.ajax({
+                    url: 'https://localhost:7290/api/genres/' + id,
+                    method: 'GET',
+                    contentType: "application/json",
+                    success: function (genre) {
+                        let form = document.forms["genreForm"];
+                        form.elements["Id"].value = genre.id;
+                        form.elements["genreName"].value = genre.name;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                });
+            }
+
+
+            // Добавление студента
+            function CreateArtist(artistName) {
+                $.ajax({
+                    url: "https://localhost:7290/api/artists",
+                    contentType: "application/json",
+                    method: "POST",
+                    data: JSON.stringify({
+                        name: artistName
+                    }),
+                    success: function (artist) {
+                        $("table tbody").append(row(artist));
+                        let form = document.forms["artistForm"];
+                        form.reset();
+                        form.elements["Id"].value = 0;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                })
+            }
+
+
+            function CreateGenre(genreName) {
+                $.ajax({
+                    url: "https://localhost:7290/api/genres",
+                    contentType: "application/json",
+                    method: "POST",
+                    data: JSON.stringify({
+                        name: genreName
+                    }),
+                    success: function (genre) {
+                        $("table tbody").append(rowGenre(genre));
+                        let form = document.forms["genreForm"];
+                        form.reset();
+                        form.elements["Id"].value = 0;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                })
+            }
+
+
+            // Изменение студента
+            function EditArtist(artistId, artistName) {
+                let request = JSON.stringify({
+                    id: artistId,
+                    name: artistName
+                });
+                $.ajax({
+                    url: "https://localhost:7290/api/artists",
+                    contentType: "application/json",
+                    method: "PUT",
+                    data: request,
+                    success: function (artist) {
+                        $("tr[data-rowid='" + artist.id + "']").replaceWith(row(artist));
+                        let form = document.forms["artistForm"];
+                        form.reset();
+                        form.elements["Id"].value = 0;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                })
+            }
+
+
+
+            function EditGenre(genreId, genreName) {
+                let request = JSON.stringify({
+                    id: genreId,
+                    name: genreName
+                });
+                $.ajax({
+                    url: "https://localhost:7290/api/genres",
+                    contentType: "application/json",
+                    method: "PUT",
+                    data: request,
+                    success: function (genre) {
+                        $("tr[data-rowid='" + genre.id + "']").replaceWith(row(rowGenre));
+                        let form = document.forms["genreForm"];
+                        form.reset();
+                        form.elements["Id"].value = 0;
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                })
+            }
+
+            // Удаление студента
+            function DeleteArtist(id) {
+                if (!confirm("Вы действительно желаете удалить артиста?"))
+                    return;
+                $.ajax({
+                    url: "https://localhost:7290/api/artists/" + id,
+                    contentType: "application/json",
+                    method: "DELETE",
+                    success: function (artist) {
+                        $("tr[data-rowid='" + artist.id + "']").remove();
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                })
+            }
+            function DeleteGenre(id) {
+                if (!confirm("Вы действительно желаете удалить жанр?"))
+                    return;
+                $.ajax({
+                    url: "https://localhost:7290/api/genres/" + id,
+                    contentType: "application/json",
+                    method: "DELETE",
+                    success: function (genre) {
+                        $("tr[data-rowid='" + genre.id + "']").remove();
+                    },
+                    error: function (jqXHR, exception) {
+                        console.log(jqXHR.status + '\n' + exception);
+                    }
+                })
+            }
+
+            // создание строки для таблицы
+            let row = function (artist) {
+                return "<tr data-rowid='" + artist.id + "'><td>" + artist.id + "</td>" +
+                    "<td>" + artist.name + "</td> " +
+                    "<td class='d-flex gap-1'>" +
+                    "<a class='editLink' data-id='" + artist.id + "'>Изменить</a> | " +
+                    "<a class='removeLink' data-id='" + artist.id + "'>Удалить</a></td></tr>";
+            };
+
+            let rowGenre = function (genre) {
+                return "<tr data-rowid='" + genre.id + "'><td>" + genre.id + "</td>" +
+                    "<td>" + genre.name + "</td> " +
+                    "<td><a class='editLinkGenre' data-id='" + genre.id + "'>Изменить</a> | " +
+                    "<a class='removeLinkGenre' data-id='" + genre.id + "'>Удалить</a></td></tr>";
+            };
+
+            // сброс значений формы
+            //обращаемся только к єлементам которые есть на форме, а не создаются програмно
+            $("#reset").click(function (e) {
+                e.preventDefault();
+                let form = document.forms["artistForm"];
+                form.reset();
+                form.elements["Id"].value = 0;
+            });
+
+            $("#resetGenre").click(function (e) {
+                e.preventDefault();
+                let form = document.forms["genreForm"];
+                form.reset();
+                form.elements["Id"].value = 0;
+            });
+
+            // отправка формы
+            $("#submit").click(function (e) {
+                e.preventDefault();
+                let form = document.forms["artistForm"];
+                let id = form.elements["Id"].value;
+                let name = form.elements["name"].value;
+                if (id == 0)
+                    CreateArtist(name);
+                else
+                    EditArtist(id, name);
+            });
+
+            $("#submitGenre").click(function (e) {
+                e.preventDefault();
+                let form = document.forms["genreForm"];
+                let id = form.elements["Id"].value;
+                let name = form.elements["name"].value;
+                if (id == 0)
+                    CreateGenre(name);
+                else
+                    EditGenre(id, name);
+            });
+
+            // нажимаем на ссылку Изменить
+            //для дочернего элемента который находится внтри
+            $("body").on("click", ".editLink", function () {
+                let id = $(this).data("id");
+                GetArtist(id);
+            });
+
+            $("body").on("click", ".editLinkGenre", function () {
+                let id = $(this).data("id");
+                GetGenre(id);
+            });
+
+            // нажимаем на ссылку Удалить
+            $("body").on("click", ".removeLink", function () {
+                let id = $(this).data("id");
+                DeleteArtist(id);
+                DeleteGenre(id);
+            });
+
+            $("body").on("click", ".removeLinkGenre", function () {
+                let id = $(this).data("id");
+                DeleteGenre(id);
+            });
+
+
+        </script>
+</body>
+</html>

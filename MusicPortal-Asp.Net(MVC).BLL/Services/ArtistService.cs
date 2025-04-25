@@ -16,17 +16,32 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             Database = uow;
         }
 
-        public async Task CreateArtist(ArtistDTO artistDto)
+        //public async Task CreateArtist(ArtistDTO artistDto)
+        //{
+        //    var artist = new Artist
+        //    {
+        //        Id = artistDto.Id,
+        //        Name = artistDto.Name
+        //    };
+        //    await Database.Artists.Create(artist);
+        //    await Database.Save();
+        //}
+
+        public async Task<ArtistDTO> CreateArtist(ArtistDTO artistDto)
         {
             var artist = new Artist
             {
-                Id = artistDto.Id,
                 Name = artistDto.Name
             };
             await Database.Artists.Create(artist);
             await Database.Save();
-        }
 
+            return new ArtistDTO
+            {
+                Id = artist.Id,
+                Name = artist.Name
+            };
+        }
         public async Task UpdateArtist(ArtistDTO artistDto)
         {
             var artist = new Artist

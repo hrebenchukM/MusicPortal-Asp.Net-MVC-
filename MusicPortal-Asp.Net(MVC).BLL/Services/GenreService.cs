@@ -16,15 +16,30 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             Database = uow;
         }
 
-        public async Task CreateGenre(GenreDTO genreDto)
+        //public async Task CreateGenre(GenreDTO genreDto)
+        //{
+        //    var genre = new Genre 
+        //    {
+        //        Id = genreDto.Id,
+        //        Name = genreDto.Name
+        //    };
+        //    await Database.Genres.Create(genre);
+        //    await Database.Save();
+        //}
+        public async Task<GenreDTO> CreateGenre(GenreDTO genreDto)
         {
-            var genre = new Genre 
+            var genre = new Genre
             {
-                Id = genreDto.Id,
                 Name = genreDto.Name
             };
             await Database.Genres.Create(genre);
             await Database.Save();
+
+            return new GenreDTO
+            {
+                Id = genre.Id,
+                Name = genre.Name
+            };
         }
 
         public async Task UpdateGenre(GenreDTO genreDto)

@@ -71,8 +71,8 @@ namespace MusicPortal_Asp.Net_WebApi_.Controllers
                 return BadRequest(ModelState);
             }
 
-            await artistService.CreateArtist(artist);
-            return Ok(artist);
+            var created = await artistService.CreateArtist(artist);
+            return Ok(created);
         }
 
         // DELETE: api/Artists/3
