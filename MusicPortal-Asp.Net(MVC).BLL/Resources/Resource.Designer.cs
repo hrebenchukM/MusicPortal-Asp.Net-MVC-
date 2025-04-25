@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ещё нет аккаунта.
+        /// </summary>
+        public static string @__DontHaveAnAccount {
+            get {
+                return ResourceManager.GetString("  DontHaveAnAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Выберите язык.
         /// </summary>
         public static string ChooseLang {

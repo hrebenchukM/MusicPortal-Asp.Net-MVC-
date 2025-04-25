@@ -240,4 +240,7 @@
   <data name="Welcome" xml:space="preserve">
     <value>Bienvenue</value>
   </data>
+  <data name="  DontHaveAnAccount" xml:space="preserve">
+    <value>Vous n’avez pas de compte</value>
+  </data>
 </root>
