@@ -16,11 +16,10 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             Database = uow;
         }
 
-        public async Task CreateUser(UserDTO userDto)
+        public async Task<UserDTO> CreateUser(UserDTO userDto)
         {
             var user = new User
             {
-                Id = userDto.Id,
                 FirstName = userDto.FirstName,
                 LastName = userDto.LastName,
                 Login = userDto.Login,
@@ -31,7 +30,37 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             };
             await Database.Users.Create(user);
             await Database.Save();
+
+            return new UserDTO
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Login = user.Login,
+                Password = user.Password,
+                Salt = user.Salt,
+                Role = user.Role,
+                IsActive = user.IsActive
+            };
+
         }
+
+        //public async Task CreateUser(UserDTO userDto)
+        //{
+        //    var user = new User
+        //    {
+        //        Id = userDto.Id,
+        //        FirstName = userDto.FirstName,
+        //        LastName = userDto.LastName,
+        //        Login = userDto.Login,
+        //        Password = userDto.Password,
+        //        Salt = userDto.Salt,
+        //        Role = userDto.Role,
+        //        IsActive = userDto.IsActive
+        //    };
+        //    await Database.Users.Create(user);
+        //    await Database.Save();
+        //}
 
         public async Task UpdateUser(UserDTO userDto)
         {

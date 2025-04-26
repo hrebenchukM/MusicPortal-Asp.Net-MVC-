@@ -6,6 +6,7 @@ using MusicPortal_Asp.Net_MVC_.BLL.DTO;
 using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
 using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
 using MusicPortal_Asp.Net_MVC_.DAL.Entities;
+using MusicPortal_Asp.Net_MVC_.BLL.Services;
 namespace MusicPortal_Asp.Net_WebApi_.Controllers
 {
     [ApiController]
@@ -73,8 +74,10 @@ namespace MusicPortal_Asp.Net_WebApi_.Controllers
                 return BadRequest(ModelState);
             }
 
-            await songService.CreateSong(song);
-            return Ok(song);
+
+            var created = await songService.CreateSong(song);
+            return Ok(created);
+           
         }
 
         // DELETE: api/Songs/3

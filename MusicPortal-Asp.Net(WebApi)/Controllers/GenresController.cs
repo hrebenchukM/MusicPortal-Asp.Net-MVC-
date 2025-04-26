@@ -72,8 +72,9 @@ namespace MusicPortal_Asp.Net_WebApi_.Controllers
                 return BadRequest(ModelState);
             }
 
-            await genreService.CreateGenre(genre);
-            return Ok(genre);
+            var created = await genreService.CreateGenre(genre);
+            return Ok(created);
+
         }
 
         // DELETE: api/Genres/3

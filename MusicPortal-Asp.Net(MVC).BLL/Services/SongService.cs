@@ -16,23 +16,35 @@ namespace MusicPortal_Asp.Net_MVC_.BLL.Services
             Database = uow;
         }
 
-        public async Task CreateSong(SongDTO songDto)
+        public async Task <SongDTO> CreateSong(SongDTO songDto)
         {
 
         var song = new Song
             {
-                Id = songDto.Id,
                 Title = songDto.Title,
                 Year = songDto.Year,
                 PathS = songDto.PathS,
                 PathV = songDto.PathV,
                 PathP = songDto.PathP,
-                ArtistId = (int)songDto.ArtistId,
-                GenreId = (int)songDto.GenreId,
-                UserId = (int)songDto.UserId
-            };
+                ArtistId = songDto.ArtistId.HasValue ? songDto.ArtistId.Value : 0, 
+                GenreId = songDto.GenreId.HasValue ? songDto.GenreId.Value : 0, 
+                UserId = songDto.UserId.HasValue ? songDto.UserId.Value : 0
+             };
             await Database.Songs.Create(song);
             await Database.Save();
+
+            return new SongDTO
+            {
+                Id = song.Id,
+                Title = song.Title,
+                Year = song.Year,
+                PathS = song.PathS,
+                PathV = song.PathV,
+                PathP = song.PathP,
+                ArtistId = (int)song.ArtistId,
+                GenreId = (int)song.GenreId,
+                UserId = (int)song.UserId
+            };
         }
 
         public async Task UpdateSong(SongDTO songDto)

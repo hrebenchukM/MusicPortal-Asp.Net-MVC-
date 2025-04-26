@@ -6,6 +6,8 @@ using MusicPortal_Asp.Net_MVC_.BLL.DTO;
 using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
 using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
 using MusicPortal_Asp.Net_MVC_.DAL.Entities;
+using Humanizer.Localisation;
+using MusicPortal_Asp.Net_MVC_.BLL.Services;
 namespace MusicPortal_Asp.Net_WebApi_.Controllers
 {
     [ApiController]
@@ -13,9 +15,11 @@ namespace MusicPortal_Asp.Net_WebApi_.Controllers
     public class UsersController : ControllerBase//класс по сути является WebAPI службой
     {
         private readonly IUserService userService;
-        public UsersController(IUserService userserv)
+        private readonly IPassword passwordService;
+        public UsersController(IUserService userserv, IPassword ps)
         {
             userService = userserv;
+            passwordService = ps;
         }
 
 
@@ -56,6 +60,10 @@ namespace MusicPortal_Asp.Net_WebApi_.Controllers
                 return NotFound();
             }
 
+            user.Salt = passwordService.GenerateSalt();
+            user.Password = passwordService.HashPassword(user.Salt, user.Password);
+
+
             await userService.UpdateUser(user);
             return Ok(user);
         }
@@ -70,9 +78,12 @@ namespace MusicPortal_Asp.Net_WebApi_.Controllers
             {
                 return BadRequest(ModelState);
             }
+            user.Salt = passwordService.GenerateSalt(); 
+            user.Password = passwordService.HashPassword(user.Salt, user.Password);
 
-            await userService.CreateUser(user);
-            return Ok(user);
+            var created = await userService.CreateUser(user);
+            return Ok(created);
+          
         }
 
         // DELETE: api/Users/3
