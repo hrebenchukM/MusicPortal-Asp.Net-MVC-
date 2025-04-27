@@ -3,7 +3,12 @@ using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
 using MusicPortal_Asp.Net_MVC_.BLL.Services;
 using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
 
+// https://developer.mozilla.org/ru/docs/Web/HTTP/CORS
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(); // добавляем сервисы CORS
+
+
 
 // Все сессии работают поверх объекта IDistributedCache, и ASP.NET Core 
 // предоставляет встроенную реализацию IDistributedCache
@@ -36,20 +41,41 @@ builder.Services.AddControllers();
 
 //builder.Services.AddEndpointsApiExplorer();
 
-//builder.Services.AddSwaggerGen();//для интерфейса
+builder.Services.AddSwaggerGen();//для интерфейса
 
 var app = builder.Build();
+// Чтобы задействовать CORS для обработки запроса вызывается метод app.UseCors()
+// Для конфигурации параметров CORS этот метод использует делегат,
+// в который передается объект CorsPolicyBuilder.
+//app.UseCors(builder => builder.AllowAnyOrigin());
+// AllowAnyOrigin() принимаются запросы с любых доменов/адресов.
+// AllowAnyHeader() принимаются запросы с любыми заголовками.
+// AllowAnyMethod() принимаются запросы любого типа. 
+// AllowCredentials() разрешается принимать идентификационные данные от клиента (например, куки).
+// WithHeaders() принимаются только те запросы, которые содержат определенные заголовки.
+// WithMethods() принимаются запросы только определенного типа.
+// WithOrigins() принимаются запросы только с определенных адресов.
+// WithExposedHeaders() позволяет серверу отправлять на сторону клиента свои заголовки.
+// https://developer.mozilla.org/ru/docs/Web/HTTP/Headers
 
-app.UseStaticFiles();
+//настроить корс для конкретного клиента расположенного на этом домене, однако для стальных клиентов будут действовать политики безопасности, то есть не будут работать кросдоменные запросы
+//любые заголовки-когда мы делаем запрос - то что отправляется в заголовке шттп пакета(передача куки , параметров,настроек)
+//любые методы -гет,пост,пут,делит
+app.UseCors(builder => builder.WithOrigins("https://localhost:7245")
+                    .AllowAnyHeader().AllowAnyMethod());
+
+
+
+
 
 app.UseSession();   // Добавляем middleware-компонент для работы с сессиями
 
 //// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())//чтоб появился сам интерфейс, при словии если у нас приложение в состоянии разработки (не релиза и не тестирования)
-//{// "ASPNETCORE_ENVIRONMENT": "Development"
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
+if (app.Environment.IsDevelopment())//чтоб появился сам интерфейс, при словии если у нас приложение в состоянии разработки (не релиза и не тестирования)
+{// "ASPNETCORE_ENVIRONMENT": "Development"
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 
 app.UseHttpsRedirection();//перенаправление чтоб запросы шли по протоколу https 

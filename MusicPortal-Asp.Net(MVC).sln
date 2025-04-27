@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPortal-Asp.Net(MVC).BL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPortal-Asp.Net(WebApi)", "MusicPortal-Asp.Net(WebApi)\MusicPortal-Asp.Net(WebApi).csproj", "{CB6CC31D-3942-41F7-ADFA-5CED49CD507D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicPortal-Asp.Net(WebApi-Client)", "MusicPortal-Asp.Net(WebApi-Client)\MusicPortal-Asp.Net(WebApi-Client).csproj", "{7800C5F7-21BA-4AD7-94AB-F8CEC081CD7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CB6CC31D-3942-41F7-ADFA-5CED49CD507D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB6CC31D-3942-41F7-ADFA-5CED49CD507D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB6CC31D-3942-41F7-ADFA-5CED49CD507D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7800C5F7-21BA-4AD7-94AB-F8CEC081CD7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7800C5F7-21BA-4AD7-94AB-F8CEC081CD7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7800C5F7-21BA-4AD7-94AB-F8CEC081CD7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7800C5F7-21BA-4AD7-94AB-F8CEC081CD7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
