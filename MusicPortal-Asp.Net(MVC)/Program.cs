@@ -1,10 +1,17 @@
-
+using MusicPortal_Asp.Net_MVC_;
 using Microsoft.EntityFrameworkCore;
 using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
 using MusicPortal_Asp.Net_MVC_.BLL.Services;
 using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// Для использования функциональности библиотеки SignalR,
+// в приложении необходимо зарегистрировать соответствующие сервисы
+builder.Services.AddSignalR();
+
+
 
 // Все сессии работают поверх объекта IDistributedCache, и ASP.NET Core 
 // предоставляет встроенную реализацию IDistributedCache
@@ -42,5 +49,8 @@ app.UseStaticFiles(); // обрабатывает запросы к файлам в папке wwwroot
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<NotificationHub>("/notification");   // NotificationHub будет обрабатывать запросы по пути /notification
+
 
 app.Run();

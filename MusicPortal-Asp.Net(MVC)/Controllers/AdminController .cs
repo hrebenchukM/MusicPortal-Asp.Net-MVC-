@@ -1,10 +1,12 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MusicPortal_Asp.Net_MVC_.BLL.DTO;
 using MusicPortal_Asp.Net_MVC_.BLL.Interfaces;
 using MusicPortal_Asp.Net_MVC_.BLL.Infrastructure;
+using MusicPortal_Asp.Net_MVC_.DAL.Entities;
+using Humanizer.Localisation;
 
 namespace MusicPortal_Asp.Net_MVC_.Controllers
 {
@@ -15,13 +17,25 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         private readonly IGenreService genreService;
         private readonly IUserService userService;
         IWebHostEnvironment _appEnvironment;
-        public AdminController(ISongService songserv, IArtistService artistserv, IGenreService genreserv, IUserService userserv, IWebHostEnvironment appEnvironment)
+
+        // Объект IHubContext реализует функциональность стандартного класса хаба
+        IHubContext<NotificationHub> hubContext { get; }
+
+        public AdminController(ISongService songserv, IArtistService artistserv, IGenreService genreserv, IUserService userserv, IWebHostEnvironment appEnvironment, IHubContext<NotificationHub> hub)
         {
             _appEnvironment = appEnvironment;
             songService = songserv;
             artistService = artistserv;
             genreService = genreserv;
             userService = userserv;
+            // Объект IHubContext можно получить благодаря встроенному механизму внедрения зависимостей
+            hubContext = hub;
+        }
+
+        private async Task SendMessage(string message)
+        {
+            // Вызов метода displayMessage на всех клиентах
+            await hubContext.Clients.All.SendAsync("displayMessage", message);
         }
 
         public async Task<IActionResult> Index()
@@ -47,25 +61,18 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         public async Task<IActionResult> ChangeActiveStatusUser(int id)
         {
             await userService.ChangeActiveStatus(id);
-           
-            return RedirectToAction(nameof(NoActiveUsers)); 
+            await SendMessage("Изменен статус пользователя");
+            return RedirectToAction(nameof(NoActiveUsers));
         }
-
-
-
-
         public async Task<IActionResult> DetailsUser(int? id)
         {
             try
             {
-
                 if (id == null)
                 {
                     return NotFound();
                 }
-
                 UserDTO user = await userService.GetUser((int)id);
-
                 return View(user);
             }
             catch (ValidationException ex)
@@ -73,15 +80,13 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 return NotFound(ex.Message);
             }
         }
-
-
         public async Task<IActionResult> EditUser(int? id)
         {
             try
             {
                 if (id == null)
                 {
-                  return NotFound();
+                    return NotFound();
                 }
 
                 var user = await userService.GetUser((int)id);
@@ -108,6 +113,8 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 {
 
                     await userService.UpdateUser(user);
+                    await SendMessage("Изменен пользователь: " + user.FirstName + " " + user.LastName + " " + user.Login + " " + user.Password + " " + user.Role + " " + user.IsActive);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -120,7 +127,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexUsers));
             }
             return View(user);
         }
@@ -140,7 +147,8 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             if (ModelState.IsValid)
             {
                 await userService.CreateUser(user);
-                return RedirectToAction(nameof(Index));
+                await SendMessage("Добавлен новый пользователь: " + user.FirstName + " " + user.LastName + " " + user.Login);
+                return RedirectToAction(nameof(IndexUsers));
             }
             return View(user);
         }
@@ -169,7 +177,9 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         {
            
             await userService.DeleteUser(id);
-            return RedirectToAction(nameof(Index));
+            await SendMessage("Удалён пользователь" );
+
+            return RedirectToAction(nameof(IndexUsers));
         }
 
 
@@ -220,7 +230,9 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             if (ModelState.IsValid)
             {
                 await genreService.CreateGenre(genre);
-                return RedirectToAction(nameof(Index));
+                await SendMessage("Добавлен новый жанр: " + genre.Name);
+
+                return RedirectToAction(nameof(IndexGenres));
             }
             return View(genre);
         }
@@ -258,6 +270,8 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 try
                 {
                     await genreService.UpdateGenre(genre);
+                    await SendMessage("Изменен жанр: " + genre.Name);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -270,7 +284,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexGenres));
             }
             return View(genre);
         }
@@ -301,9 +315,11 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             if (genre != null)
             {
                 await genreService.DeleteGenre(id);
+                await SendMessage("Удален жанр: " + genre.Name);
+
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexGenres));
         }
 
         private async Task<bool> GenreExists(int id)
@@ -351,7 +367,8 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             if (ModelState.IsValid)
             {
                 await artistService.CreateArtist(artist);
-                return RedirectToAction(nameof(Index));
+                await SendMessage("Добавлен новый артист: " + artist.Name);
+                return RedirectToAction(nameof(IndexArtists));
             }
             return View(artist);
         }
@@ -389,6 +406,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                 try
                 {
                     await artistService.UpdateArtist(artist);
+                    await SendMessage("Изменен артист: " + artist.Name);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -401,7 +419,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexArtists));
             }
             return View(artist);
         }
@@ -435,9 +453,10 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
             if (artist != null)
             {
                 await artistService.DeleteArtist(id);
+                await SendMessage("дален артист: " + artist.Name);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexArtists));
         }
 
         private async Task<bool> ArtistExists(int id)
@@ -538,6 +557,7 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                     song.PathS = pathS;
                 }
                 await songService.CreateSong(song);
+                await SendMessage("Добавлена новая песня: " + song.Title + " " + song.Year + " " + song.Genre + " " + song.Artist);
                 return RedirectToAction(nameof(Index));
             }
             var artistList = await artistService.GetArtists();
@@ -645,7 +665,8 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
                         song.PathS = pathS;
                     }
                   await songService.UpdateSong(song);
-                
+                  await SendMessage("Изменена песня: " + song.Title + " " + song.Year + " " + song.Genre + " " + song.Artist + " " + song.PathP + " " + song.PathS + " " + song.PathV);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -695,6 +716,8 @@ namespace MusicPortal_Asp.Net_MVC_.Controllers
         public async Task<IActionResult> DeleteConfirmedSong(int id)
         {
             await songService.DeleteSong(id);
+            await SendMessage("Удалена песня");
+
             return RedirectToAction(nameof(Index));
         }
     }
